@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.14.4" />
+    <PackageReference Include="Ardalis.GuardClauses" Version="3.1.0" />
+    <PackageReference Include="Kentico.Xperience.Libraries" Version="[13.0.0, 13.1.0)" />
+  </ItemGroup>
+
+</Project>
