@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -24,30 +26,31 @@ namespace XperienceCommunity.CQRS.Data
     {
         private readonly IQueryHandler<TQuery, TResponse> handler;
         private readonly IProgressiveCache cache;
+        private readonly IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators;
         private readonly QueryCacheConfiguration config;
 
         public QueryHandlerCacheDecorator(
             IQueryHandler<TQuery, TResponse> handler,
             IProgressiveCache cache,
+            IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators,
             QueryCacheConfiguration config)
         {
             Guard.Against.Null(handler, nameof(handler));
             Guard.Against.Null(cache, nameof(cache));
+            Guard.Against.Null(creators, nameof(creators));
             Guard.Against.Null(config, nameof(config));
 
             this.handler = handler;
             this.cache = cache;
+            this.creators = creators;
             this.config = config;
         }
 
         public Task<Result<TResponse>> Execute(TQuery query, CancellationToken token = default)
         {
-            if (!config.IsEnabled)
-            {
-                return handler.Execute(query, token);
-            }
+            var creator = creators.FirstOrDefault();
 
-            if (handler is not IQueryHandlerCacheKeysCreator<TQuery, TResponse> cacheKeysCreator)
+            if (!config.IsEnabled || creator is null)
             {
                 return handler.Execute(query, token);
             }
@@ -55,7 +58,7 @@ namespace XperienceCommunity.CQRS.Data
             var settings = new CacheSettings(
                 cacheMinutes: config.CacheItemDuration.Minutes,
                 useSlidingExpiration: true,
-                cacheItemNameParts: cacheKeysCreator.ItemNameParts(query));
+                cacheItemNameParts: creator.ItemNameParts(query));
 
             return cache.LoadAsync(async (cs, t) =>
             {
@@ -63,7 +66,7 @@ namespace XperienceCommunity.CQRS.Data
 
                 if (cs.Cached)
                 {
-                    cs.GetCacheDependency = () => CacheHelper.GetCacheDependency(cacheKeysCreator.DependencyKeys(query, result));
+                    cs.GetCacheDependency = () => CacheHelper.GetCacheDependency(creator.DependencyKeys(query, result));
                 }
 
                 return result;

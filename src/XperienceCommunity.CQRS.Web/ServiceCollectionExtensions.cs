@@ -8,8 +8,7 @@ namespace XperienceCommunity.CQRS.Web
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddCQRS(this IServiceCollection services, params Assembly[] assemblies)
-        {
+        public static IServiceCollection AddCQRS(this IServiceCollection services, params Assembly[] assemblies) =>
             services
                 .AddSingleton<IQueryContext, XperienceQueryContext>()
                 .AddScoped(s =>
@@ -22,9 +21,6 @@ namespace XperienceCommunity.CQRS.Web
                     .AsImplementedInterfaces())
                 .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerErrorDecorator<,>))
                 .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerCacheDecorator<,>));
-
-            return services;
-        }
 
         private static bool MatchCQRSTypes(Type t)
         {
