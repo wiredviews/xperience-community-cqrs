@@ -20,7 +20,10 @@ namespace XperienceCommunity.CQRS.Web
                     .AddClasses(c => c.Where(MatchCQRSTypes), true)
                     .AsImplementedInterfaces())
                 .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerErrorDecorator<,>))
-                .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerCacheDecorator<,>));
+                .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerCacheDecorator<,>))
+                .AddScoped<CacheDependenciesStore>()
+                .AddScoped<ICacheDependenciesStore>(s => s.GetRequiredService<CacheDependenciesStore>())
+                .AddScoped<ICacheDependenciesScope>(s => s.GetRequiredService<CacheDependenciesStore>());
 
         private static bool MatchCQRSTypes(Type t)
         {
