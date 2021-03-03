@@ -29,7 +29,7 @@ namespace XperienceCommunity.CQRS.Data
                 return;
             }
 
-            foreach (string? key in keys)
+            foreach (string key in keys)
             {
                 currentScope.Add(key);
             }

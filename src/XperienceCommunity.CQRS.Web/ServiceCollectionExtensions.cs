@@ -23,7 +23,11 @@ namespace XperienceCommunity.CQRS.Web
                 .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerCacheDecorator<,>))
                 .AddScoped<CacheDependenciesStore>()
                 .AddScoped<ICacheDependenciesStore>(s => s.GetRequiredService<CacheDependenciesStore>())
-                .AddScoped<ICacheDependenciesScope>(s => s.GetRequiredService<CacheDependenciesStore>());
+                .AddScoped<ICacheDependenciesScope>(s => s.GetRequiredService<CacheDependenciesStore>())
+                .AddTransient<OperationServiceFactory>(provider =>
+                {
+                    return t => provider.GetRequiredService(t);
+                });
 
         private static bool MatchCQRSTypes(Type t)
         {
