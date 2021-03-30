@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using AngleSharp.Common;
 using Microsoft.Extensions.DependencyInjection;
 using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.CQRS.Data;
@@ -11,6 +12,11 @@ namespace XperienceCommunity.CQRS.Web
         public static IServiceCollection AddCQRS(this IServiceCollection services, params Assembly[] assemblies) =>
             services
                 .AddSingleton<IQueryContext, XperienceQueryContext>()
+                .Configure<RazorCacheConfiguration>(c =>
+                {
+                    c.CacheExpiration = TimeSpan.FromMinutes(1);
+                })
+                .AddScoped<RazorCacheService>()
                 .AddScoped(s =>
                 {
                     return new QueryCacheConfiguration(true, TimeSpan.FromMinutes(5));
@@ -18,7 +24,9 @@ namespace XperienceCommunity.CQRS.Web
                 .Scan(s => s
                     .FromAssemblies(assemblies)
                     .AddClasses(c => c.Where(MatchCQRSTypes), true)
-                    .AsImplementedInterfaces())
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime())
+                .AddScoped<IQueryDispatcher, QueryDispatcher>()
                 .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerErrorDecorator<,>))
                 .Decorate(typeof(IQueryHandler<,>), typeof(QueryHandlerCacheDecorator<,>))
                 .AddScoped<CacheDependenciesStore>()
@@ -39,8 +47,7 @@ namespace XperienceCommunity.CQRS.Web
             string name = t.Name;
 
             return name.EndsWith("QueryHandler", StringComparison.Ordinal) ||
-                name.EndsWith("CommandHandler", StringComparison.Ordinal) ||
-                name.EndsWith("Dispatcher", StringComparison.Ordinal);
+                name.EndsWith("CommandHandler", StringComparison.Ordinal);
         }
     }
 }

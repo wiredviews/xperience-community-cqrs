@@ -1,3 +1,18 @@
 {
-    "omnisharp.defaultLaunchSolution": "./src/XperienceCommunity.CQRS.sln"
+    "omnisharp.defaultLaunchSolution": "./XperienceCommunity.CQRS.sln",
+    "omnisharp.organizeImportsOnFormat": true,
+    "omnisharp.useEditorFormattingSettings": true,
+    "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.enableImportCompletion": true,
+    
+    "csharp.semanticHighlighting.enabled": true,
+    
+    "[csharp]": {
+        "editor.semanticHighlighting.enabled": true,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": true,
+            "source.organizeImports": true
+        },
+    }
 }

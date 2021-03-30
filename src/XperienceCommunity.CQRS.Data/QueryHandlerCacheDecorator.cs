@@ -72,7 +72,7 @@ namespace XperienceCommunity.CQRS.Data
             {
                 var result = await handler.Execute(query, t);
 
-                if (result.IsFailure && !context.PageBuilderContext.IsLiveMode)
+                if (result.IsFailure)
                 {
                     cs.Cached = false;
                 }

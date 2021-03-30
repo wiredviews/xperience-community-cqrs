@@ -1,0 +1,19 @@
+@using CMS.DocumentEngine
+@using XperienceCommunity.Sandbox.Web.Features.Home
+
+@model ComponentViewModel<HomePageTemplateProperties>
+
+@if (Model.Page is not TreeNode node)
+{
+    return;
+}
+
+<cache enabled="Cache.IsEnabled" expires-sliding="Cache.Expires" vary-by="@Cache.VaryBy()">
+
+    @Cache.BeginScope()
+
+    <vc:home-page node="node" />
+
+    <cache-dependency cache-keys="Cache.EndScope()" enabled="Cache.IsEnabled" />
+
+</cache>

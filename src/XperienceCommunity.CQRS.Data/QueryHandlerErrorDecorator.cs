@@ -53,7 +53,14 @@ namespace XperienceCommunity.CQRS.Data
 
                 return result;
             }
-            catch (Exception ex)
+            /*
+             * TaskCancelledExceptions can occur regularly, since they are sent by the browser
+             * when a request is aborted mid-flight due to a navigation (for standard GET/POST)
+             * or when an XHR has been canceled programmatically.
+             * 
+             * We don't want to log them
+             */
+            catch (Exception ex) when (ex is not TaskCanceledException)
             {
                 if (ShouldLog(query))
                 {
@@ -66,6 +73,10 @@ namespace XperienceCommunity.CQRS.Data
                 }
 
                 return Result.Failure<TResponse>(ex.Message);
+            }
+            catch (Exception ex) when (ex is TaskCanceledException cancelEx)
+            {
+                return Result.Failure<TResponse>(cancelEx.Message);
             }
 
             bool ShouldLog(TQuery query)

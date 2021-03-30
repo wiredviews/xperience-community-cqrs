@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Scrutor" Version="3.3.0" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.0, 13.1.0)" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
+  </ItemGroup>
+  
+</Project>

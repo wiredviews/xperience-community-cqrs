@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Web\XperienceCommunity.CQRS.Web.csproj" />
+    <ProjectReference Include="..\XperienceCommunity.Sandbox.Core\XperienceCommunity.Sandbox.Core.csproj" />
+    <ProjectReference Include="..\XperienceCommunity.Sandbox.Data\XperienceCommunity.Sandbox.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WiredViews.Xperience.PageBuilderModeTagHelper" Version="2.0.0" />
+    <PackageReference Include="XperienceCommunity.PageTemplateUtilities" Version="1.0.0" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.18, 13.1.0)" />
+  </ItemGroup>
+
+</Project>
