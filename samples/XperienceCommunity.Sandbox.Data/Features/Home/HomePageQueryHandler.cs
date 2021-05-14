@@ -16,17 +16,14 @@ namespace XperienceCommunity.Sandbox.Data.Features.Home
     {
         private readonly IPageRetriever pageRetriever;
         private readonly IPageAttachmentUrlRetriever urlRetriever;
-        private readonly IAttachmentInfoProvider provider;
 
         public HomePageQueryHandler(
             IQueryContext context,
             IPageRetriever pageRetriever,
-            IPageAttachmentUrlRetriever urlRetriever,
-            IAttachmentInfoProvider provider) : base(context)
+            IPageAttachmentUrlRetriever urlRetriever) : base(context)
         {
             this.pageRetriever = pageRetriever;
             this.urlRetriever = urlRetriever;
-            this.provider = provider;
         }
 
         public override Task<Result<HomePageQueryData>> Execute(HomePageQuery query, CancellationToken token = default) =>
