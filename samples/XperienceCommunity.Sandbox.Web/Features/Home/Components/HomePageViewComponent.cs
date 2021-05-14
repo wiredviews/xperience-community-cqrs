@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CMS.DocumentEngine;
+using CMS.DocumentEngine.Types.Sandbox;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace XperienceCommunity.Sandbox.Web.Features.Home.Components
             this.dispatcher = dispatcher;
         }
 
-        public Task<ViewViewComponentResult> InvokeAsync(TreeNode node) =>
+        public Task<ViewViewComponentResult> InvokeAsync(HomePage page) =>
             dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
                 .Map(r => new HomePageViewModel(r))
                 .Finally(r => View("_HomePage", r));
@@ -26,7 +27,7 @@ namespace XperienceCommunity.Sandbox.Web.Features.Home.Components
 
     public class HomePageViewModel
     {
-        public HomePageViewModel(HomePageQueryResponse resp)
+        public HomePageViewModel(HomePageQueryData resp)
         {
             Title = resp.Title;
             BodyHTML = resp.BodyHTML.Map(b => new HtmlString(b));

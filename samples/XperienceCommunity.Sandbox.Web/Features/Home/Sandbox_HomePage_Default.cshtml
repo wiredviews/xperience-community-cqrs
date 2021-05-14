@@ -1,9 +1,9 @@
-@using CMS.DocumentEngine
+@using CMS.DocumentEngine.Types.Sandbox
 @using XperienceCommunity.Sandbox.Web.Features.Home
 
 @model ComponentViewModel<HomePageTemplateProperties>
 
-@if (Model.Page is not TreeNode node)
+@if (Model.Page is not HomePage homePage)
 {
     return;
 }
@@ -12,7 +12,7 @@
 
     @Cache.BeginScope()
 
-    <vc:home-page node="node" />
+    <vc:home-page page="node" />
 
     <cache-dependency cache-keys="Cache.EndScope()" enabled="Cache.IsEnabled" />
 

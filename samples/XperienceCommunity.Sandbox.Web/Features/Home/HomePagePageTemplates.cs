@@ -1,3 +1,4 @@
+using CMS.DocumentEngine.Types.Sandbox;
 using Kentico.PageBuilder.Web.Mvc.PageTemplates;
 using XperienceCommunity.Sandbox.Web.Features.Home;
 
@@ -11,7 +12,7 @@ namespace XperienceCommunity.Sandbox.Web.Features.Home
 {
     public class HomePagePageTemplates : PageTypePageTemplateFilter
     {
-        public override string PageTypeClassName => "Sandbox.HomePage";
+        public override string PageTypeClassName => HomePage.CLASS_NAME;
     }
 
     public class HomePageTemplateProperties : IPageTemplateProperties
