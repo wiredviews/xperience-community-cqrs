@@ -31,9 +31,8 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
 1. Create a new implementation of `IQuery<T>`
 
    ```csharp
-   public record HomePageQuery : IQuery<HomePageQueryData> { }
-
-   public record HomePageQueryData(string Title, Maybe<string> BodyHTML) { }
+   public record HomePageQuery : IQuery<HomePageQueryData>;
+   public record HomePageQueryData(string Title, Maybe<string> BodyHTML);
    ```
 
 1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
