@@ -68,7 +68,7 @@ namespace XperienceCommunity.CQRS.Web
             scope.End().ToArray();
 
         /// <summary>
-        /// The default 'vary by' for cached content
+        /// The default 'vary by' for cached content which varies by the current Document
         /// </summary>
         /// <returns></returns>
         public string VaryBy() =>
