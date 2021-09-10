@@ -34,7 +34,7 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with
      - Presentation layer cache and service collection registration utilities.
      - The project consuming this package is where your presentation logic is located (Razor/View Components/Controllers).
 
-1. First, install the NuGet package(s) in your ASP.NET Core projects (see the example project under [/samples](/tree/main/samples))
+1. First, install the NuGet package(s) in your ASP.NET Core projects (see the example project under [/samples](https://github.com/wiredviews/xperience-community-cqrs/tree/main/samples))
 
    ```bash
    dotnet add package XperienceCommunity.CQRS.Core
