@@ -105,7 +105,7 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with
 
        public Task<IViewComponentResult> Invoke() =>
            dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-               .Match(this, "_HomePage", data => new HomePageViewModel(data));
+               .View(this, "_HomePage", data => new HomePageViewModel(data));
    }
    ```
 

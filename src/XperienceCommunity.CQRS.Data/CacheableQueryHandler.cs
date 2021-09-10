@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using CSharpFunctionalExtensions;
 using XperienceCommunity.CQRS.Core;
+using XperienceCommunity.PageBuilderModeTagHelper;
 
 namespace XperienceCommunity.CQRS.Data
 {
@@ -75,7 +76,7 @@ namespace XperienceCommunity.CQRS.Data
                     {
                         query.GetType().Name,
                         SiteContext.SiteName,
-                        CultureContext.Code,
+                        CultureContext.CultureCode,
                         $"is-live:{PageBuilderContext.IsLiveMode}",
                         cacheByValueQuery.CacheValueKey
                     }
@@ -83,7 +84,7 @@ namespace XperienceCommunity.CQRS.Data
                     {
                         query.GetType().Name,
                         SiteContext.SiteName,
-                        CultureContext.Code,
+                        CultureContext.CultureCode,
                         $"is-live:{PageBuilderContext.IsLiveMode}"
                     };
     }

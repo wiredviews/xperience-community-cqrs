@@ -4,8 +4,8 @@ using CMS.DocumentEngine;
 using Kentico.Content.Web.Mvc;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.Options;
-using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.CQRS.Data;
+using XperienceCommunity.PageBuilderModeTagHelper;
 
 namespace XperienceCommunity.CQRS.Web
 {

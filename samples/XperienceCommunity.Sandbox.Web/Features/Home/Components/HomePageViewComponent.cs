@@ -19,7 +19,7 @@ namespace XperienceCommunity.Sandbox.Web.Features.Home.Components
 
         public Task<IViewComponentResult> InvokeAsync(HomePage page) =>
             dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-                .Match(this, "_HomePage", r => new HomePageViewModel(r));
+                .View(this, "_HomePage", r => new HomePageViewModel(r));
     }
 
     public class HomePageViewModel

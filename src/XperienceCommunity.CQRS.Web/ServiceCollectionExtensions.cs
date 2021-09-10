@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using AngleSharp.Common;
 using Microsoft.Extensions.DependencyInjection;
 using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.CQRS.Data;
+using XperienceCommunity.PageBuilderModeTagHelper;
 
 namespace XperienceCommunity.CQRS.Web
 {
@@ -12,6 +12,9 @@ namespace XperienceCommunity.CQRS.Web
         public static IServiceCollection AddCQRS(this IServiceCollection services, params Assembly[] assemblies) =>
             services
                 .AddSingleton<IQueryContext, XperienceQueryContext>()
+                .AddSingleton<ISiteContext, XperienceSiteContext>()
+                .AddSingleton<ICultureContext, XperienceCultureContext>()
+                .AddSingleton<IPageBuilderContext, XperiencePageBuilderContext>()
                 .Configure<RazorCacheConfiguration>(c =>
                 {
                     c.CacheExpiration = TimeSpan.FromMinutes(1);

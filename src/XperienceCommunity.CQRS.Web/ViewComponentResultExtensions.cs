@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Mvc
         /// <param name="component"></param>
         /// <param name="viewPath"></param>
         /// <returns></returns>
-        public static IViewComponentResult Match<T>(this Result<T> result, ViewComponent component, string viewPath) =>
+        public static IViewComponentResult View<T>(this Result<T> result, ViewComponent component, string viewPath) =>
             result.Match(
                 v => component.View(viewPath, v),
                 error => 
@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Mvc
         /// <param name="viewPath"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
-        public static IViewComponentResult Match<T, U>(this Result<T> result, ViewComponent component, string viewPath, Func<T, U> projection) =>
+        public static IViewComponentResult View<T, U>(this Result<T> result, ViewComponent component, string viewPath, Func<T, U> projection) =>
             result.Match(
                 v => component.View(viewPath, projection(v)),
                 error => 
@@ -63,7 +63,7 @@ namespace Microsoft.AspNetCore.Mvc
         /// <param name="component"></param>
         /// <param name="viewPath"></param>
         /// <returns></returns>
-        public static Task<IViewComponentResult> Match<T>(this Task<Result<T>> resultTask, ViewComponent component, string viewPath) =>
+        public static Task<IViewComponentResult> View<T>(this Task<Result<T>> resultTask, ViewComponent component, string viewPath) =>
             resultTask.Match(
                 v => component.View(viewPath, v),
                 error => 
@@ -85,7 +85,7 @@ namespace Microsoft.AspNetCore.Mvc
         /// <param name="viewPath"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
-        public static Task<IViewComponentResult> Match<T, U>(this Task<Result<T>> resultTask, ViewComponent component, string viewPath, Func<T, U> projection) =>
+        public static Task<IViewComponentResult> View<T, U>(this Task<Result<T>> resultTask, ViewComponent component, string viewPath, Func<T, U> projection) =>
             resultTask.Match(
                 v => component.View(viewPath, projection(v)),
                 error => 
