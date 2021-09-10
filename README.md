@@ -31,20 +31,38 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
 1. Create a new implementation of `IQuery<T>`
 
    ```csharp
-   public record HomePageQuery : IQuery<HomePageQueryResponse> { }
+   public record HomePageQuery : IQuery<HomePageQueryData> { }
 
-   public record HomePageQueryResponse(string Title, string BodyHTML) { }
+   public record HomePageQueryData(string Title, Maybe<string> BodyHTML) { }
    ```
 
 1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
 
    ```csharp
-   public class HomePageQueryHandler : IQueryHandler<HomePageQuery, HomePageQueryResponse>
+   public class HomePageQueryHandler : CacheableQueryHandler<HomePageQuery, HomePageQueryData>
    {
-       public override Task<Result<HomePageQueryResponse>> Execute(HomePageQuery query, CancellationToken token)
-       {
-           // ...
-       }
+       private readonly IPageRetriever retriever;
+
+       public HomePageQueryHandler(IPageRetriever retriever) => this.retriever = retriever;
+
+       public override Task<Result<HomePageQueryData>> Execute(HomePageQuery query, CancellationToken token) =>
+           pageRetriever.RetrieveAsync<HomePage>(q => q.TopN(1), cancellationToken: token)
+                .TryFirst()
+                .ToResult($"Could not find any [{HomePage.CLASS_NAME}]")
+                .Map(homePage =>
+                {
+                    var bodyHTML = string.IsNullOrWhiteSpace(p.Fields.BodyHTML)
+                        ? Maybe<string>.None
+                        : p.Fields.BodyHTML;
+
+                    return new HomePageQueryData(homePage.Fields.Title, bodyHTML);
+                });
+
+        protected override void AddDependencyKeys(
+            HomePageQuery query,
+            HomePageQueryData response,
+            ICacheDependencyKeysBuilder builder) =>
+            builder.PageType(HomePage.CLASS_NAME);
    }
    ```
 
@@ -72,21 +90,9 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
        public HomePageViewComponent(IQueryDispatcher dispatcher) =>
            this.dispatcher = dispatcher;
 
-       public async Task<IViewComponentResult> Invoke()
-       {
-           var result = await dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted);
-
-           if (result.IsSuccess)
-           {
-               HomePageQueryResponse value = result.Value;
-           }
-           else
-           {
-               string error = result.Error;
-           }
-
-           // ...
-       }
+       public Task<IViewComponentResult> Invoke() =>
+           dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
+               .Match(this, "_HomePage", data => new HomePageViewModel(data));
    }
    ```
 

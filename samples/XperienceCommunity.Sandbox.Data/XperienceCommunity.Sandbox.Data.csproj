@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="WiredViews.Xperience.QueryExtensions" Version="1.0.0" />
-    <PackageReference Include="WiredViews.Kentico.FluentCacheKeys" Version="2.1.0" />
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.0, 13.1.0)" />
   </ItemGroup>
 

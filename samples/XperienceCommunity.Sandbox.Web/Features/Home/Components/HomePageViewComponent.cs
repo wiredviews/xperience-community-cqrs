@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
-using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.Sandbox;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
 using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.Sandbox.Core.Features.Home;
 
@@ -19,19 +17,18 @@ namespace XperienceCommunity.Sandbox.Web.Features.Home.Components
             this.dispatcher = dispatcher;
         }
 
-        public Task<ViewViewComponentResult> InvokeAsync(HomePage page) =>
+        public Task<IViewComponentResult> InvokeAsync(HomePage page) =>
             dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-                .Map(r => new HomePageViewModel(r))
-                .Finally(r => View("_HomePage", r));
+                .Match(this, "_HomePage", r => new HomePageViewModel(r));
     }
 
     public class HomePageViewModel
     {
-        public HomePageViewModel(HomePageQueryData resp)
+        public HomePageViewModel(HomePageQueryData data)
         {
-            Title = resp.Title;
-            BodyHTML = resp.BodyHTML.Map(b => new HtmlString(b));
-            ImagePath = resp.Image.Map(i => i.ImagePath);
+            Title = data.Title;
+            BodyHTML = data.BodyHTML.Map(b => new HtmlString(b));
+            ImagePath = data.Image.Map(i => i.ImagePath);
         }
 
         public string Title { get; }

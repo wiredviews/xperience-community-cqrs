@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CMS.DocumentEngine;
 using CMS.DocumentEngine.Types.Sandbox;
 using CSharpFunctionalExtensions;
-using FluentCacheKeys;
 using Kentico.Content.Web.Mvc;
 using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.CQRS.Data;
@@ -36,7 +34,7 @@ namespace XperienceCommunity.Sandbox.Data.Features.Home
                 {
                     var image = GetImage(p, token);
 
-                    Maybe<string> descriptionHTML = string.IsNullOrWhiteSpace(p.Fields.DescriptionHTML)
+                    var descriptionHTML = string.IsNullOrWhiteSpace(p.Fields.DescriptionHTML)
                         ? Maybe<string>.None
                         : p.Fields.DescriptionHTML;
 
@@ -60,25 +58,12 @@ namespace XperienceCommunity.Sandbox.Data.Features.Home
                 : new HomePageImageData(image.AttachmentGUID, url.RelativePath);
         }
 
-        protected override ICollection<string> QueryDependencyKeys(HomePageQuery query)
+        protected override void AddDependencyKeys(HomePageQuery query, HomePageQueryData response, ICacheDependencyKeysBuilder builder)
         {
-            var keys = base.QueryDependencyKeys(query);
+            builder
+                .PageType(HomePage.CLASS_NAME);
 
-            keys.Add(FluentCacheKey.ForPages().OfSite(SiteContext.SiteName).OfClassName(HomePage.CLASS_NAME));
-
-            return keys;
-        }
-
-        protected override ICollection<string> ResultDependencyKeys(HomePageQuery query, HomePageQueryData value)
-        {
-            var keys = base.ResultDependencyKeys(query, value);
-
-            value.Image.Execute(i =>
-            {
-                keys.Add(FluentCacheKey.ForAttachment().WithGuid(i.ImageGuid));
-            });
-
-            return keys;
+            response.Image.Execute(i => builder.Attachment(i.ImageGuid));
         }
     }
 }

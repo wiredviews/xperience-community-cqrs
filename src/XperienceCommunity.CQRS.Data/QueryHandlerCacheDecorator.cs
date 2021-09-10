@@ -79,7 +79,7 @@ namespace XperienceCommunity.CQRS.Data
 
                 if (cs.Cached)
                 {
-                    var keys = creator.DependencyKeys(query, result);
+                    var keys = creator.DependencyKeys(query, result.Value);
 
                     store.Store(keys);
 

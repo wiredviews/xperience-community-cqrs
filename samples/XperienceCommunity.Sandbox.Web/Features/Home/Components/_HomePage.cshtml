@@ -1,0 +1,14 @@
+@using CSharpFunctionalExtensions
+@using Microsoft.AspNetCore.Html
+@using XperienceCommunity.Sandbox.Web.Features.Home.Components
+
+@model HomePageViewModel
+
+<h1>@Model.Title</h1>
+
+@Model.BodyHTML.Unwrap(HtmlString.Empty)
+
+@if (Model.ImagePath is { HasValue: true, Value: var imagePath })
+{
+    <img src="@imagePath" alt="@Model.Title" />
+}

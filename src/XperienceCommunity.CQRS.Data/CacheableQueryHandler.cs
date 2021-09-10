@@ -27,7 +27,7 @@ namespace XperienceCommunity.CQRS.Data
             Context = context;
         }
 
-        private readonly HashSet<string> dependencyKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> customKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         protected IQueryContext Context { get; }
         protected IPageBuilderContext PageBuilderContext => Context.PageBuilderContext;
@@ -38,24 +38,14 @@ namespace XperienceCommunity.CQRS.Data
         public abstract Task<Result<TResponse>> Execute(TQuery query, CancellationToken token = default);
 
         /// <inheritdoc/>
-        public string[] DependencyKeys(TQuery query, Result<TResponse> result)
+        public string[] DependencyKeys(TQuery query, TResponse response)
         {
-            foreach (string key in QueryDependencyKeys(query))
-            {
-                dependencyKeys.Add(key);
-            }
+            var builder = new CacheDependencyKeysBuilder(SiteContext);
+            builder.CustomKeys(customKeys);
 
-            if (result.IsFailure)
-            {
-                return dependencyKeys.ToArray();
-            }
+            AddDependencyKeys(query, response, builder);
 
-            foreach (string key in ResultDependencyKeys(query, result.Value))
-            {
-                dependencyKeys.Add(key);
-            }
-
-            return dependencyKeys.ToArray();
+            return builder.GetKeys().ToArray();
         }
 
         /// <summary>
@@ -66,25 +56,17 @@ namespace XperienceCommunity.CQRS.Data
         {
             Guard.Against.Null(setCustomKeys, nameof(setCustomKeys));
 
-            setCustomKeys(dependencyKeys);
+            setCustomKeys(customKeys);
         }
-
-        /// <summary>
-        /// Overridable to explicitly set the cache dependency keys based on the <typeparamref name="TQuery"/>
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        protected virtual ICollection<string> QueryDependencyKeys(TQuery query) =>
-            dependencyKeys;
 
         /// <summary>
         /// Overridable to explicitly set the cache dependency keys based on the <typeparamref name="TQuery"/> and <typeparamref name="TResponse"/>
         /// </summary>
         /// <param name="query"></param>
-        /// <param name="value"></param>
+        /// <param name="response"></param>
+        /// <param name="builder"></param>
         /// <returns></returns>
-        protected virtual ICollection<string> ResultDependencyKeys(TQuery query, TResponse value) =>
-            dependencyKeys;
+        protected virtual void AddDependencyKeys(TQuery query, TResponse response, ICacheDependencyKeysBuilder builder) { }
 
         /// <inheritdoc/>
         public virtual object[] ItemNameParts(TQuery query) =>

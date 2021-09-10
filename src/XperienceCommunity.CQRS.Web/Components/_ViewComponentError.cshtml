@@ -1,0 +1,5 @@
+@addTagHelper *, Xperience.PageBuilderModeTagHelper
+
+<page-builder-mode exclude="Live">
+    @Html.ValidationSummary(false, "This component encountered and error and might be misconfigured:", new { @class = "text-dark bg-white p-4 widget-config-error" })
+</page-builder-mode>

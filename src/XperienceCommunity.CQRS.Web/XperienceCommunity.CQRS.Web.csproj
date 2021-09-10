@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Scrutor" Version="3.3.0" />
+    <PackageReference Include="WiredViews.Xperience.PageBuilderModeTagHelper" Version="2.0.0" />
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.0, 13.1.0)" />
   </ItemGroup>
 
