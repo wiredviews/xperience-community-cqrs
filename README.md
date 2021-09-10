@@ -10,7 +10,8 @@ A CQRS implementation influenced by <https://github.com/jbogard/MediatR/> combin
 
 ## Dependencies
 
-This package is compatible with ASP.NET Core 5+ and is designed to be used with .NET Core / .NET 5 applications integrated with Kentico Xperience 13.0.
+This package is compatible with ASP.NET Core 5+ and is designed to be used with
+.NET Core / .NET 5 applications integrated with Kentico Xperience 13.0.
 
 ## How to Use?
 
@@ -25,6 +26,8 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
 1. First, install the NuGet package(s) in your ASP.NET Core projects
 
    ```bash
+   dotnet add package XperienceCommunity.CQRS.Core
+   dotnet add package XperienceCommunity.CQRS.Data
    dotnet add package XperienceCommunity.CQRS.Web
    ```
 
@@ -35,7 +38,7 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
    public record HomePageQueryData(string Title, Maybe<string> BodyHTML);
    ```
 
-1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
+   1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
 
    ```csharp
    public class HomePageQueryHandler : CacheableQueryHandler<HomePageQuery, HomePageQueryData>
@@ -46,22 +49,22 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
 
        public override Task<Result<HomePageQueryData>> Execute(HomePageQuery query, CancellationToken token) =>
            pageRetriever.RetrieveAsync<HomePage>(q => q.TopN(1), cancellationToken: token)
-                .TryFirst()
-                .ToResult($"Could not find any [{HomePage.CLASS_NAME}]")
-                .Map(homePage =>
-                {
-                    var bodyHTML = string.IsNullOrWhiteSpace(p.Fields.BodyHTML)
-                        ? Maybe<string>.None
-                        : p.Fields.BodyHTML;
+               .TryFirst()
+               .ToResult($"Could not find any [{HomePage.CLASS_NAME}]")
+               .Map(homePage =>
+               {
+                   var bodyHTML = string.IsNullOrWhiteSpace(p.Fields.BodyHTML)
+                       ? Maybe<string>.None
+                       : p.Fields.BodyHTML;
 
-                    return new HomePageQueryData(homePage.Fields.Title, bodyHTML);
-                });
+                   return new HomePageQueryData(homePage.Fields.Title, bodyHTML);
+               });
 
-        protected override void AddDependencyKeys(
-            HomePageQuery query,
-            HomePageQueryData response,
-            ICacheDependencyKeysBuilder builder) =>
-            builder.PageType(HomePage.CLASS_NAME);
+       protected override void AddDependencyKeys(
+           HomePageQuery query,
+           HomePageQueryData response,
+           ICacheDependencyKeysBuilder builder) =>
+           builder.PageType(HomePage.CLASS_NAME);
    }
    ```
 
@@ -92,6 +95,22 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with 
        public Task<IViewComponentResult> Invoke() =>
            dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
                .Match(this, "_HomePage", data => new HomePageViewModel(data));
+   }
+   ```
+
+   ```razor
+   @using CSharpFunctionalExtensions
+   @using Microsoft.AspNetCore.Html
+   @using XperienceCommunity.Sandbox.Web.Features.Home.Components
+   @model HomePageViewModel
+
+   <h1>@Model.Title</h1>
+
+   @Model.BodyHTML.Unwrap(HtmlString.Empty)
+
+   @if (Model.ImagePath is { HasValue: true, Value: var imagePath })
+   {
+       <img src="@imagePath" alt="@Model.Title" />
    }
    ```
 

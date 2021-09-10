@@ -1,0 +1,11 @@
+{
+  "line-length": {
+    "code_blocks": false
+  },
+  "code-fence-style": {
+    "style": "backtick"
+  },
+  "code-block-style": {
+    "style": "fenced"
+  }
+}
