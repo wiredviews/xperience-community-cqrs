@@ -38,7 +38,7 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with
    public record HomePageQueryData(string Title, Maybe<string> BodyHTML);
    ```
 
-   1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
+1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
 
    ```csharp
    public class HomePageQueryHandler : CacheableQueryHandler<HomePageQuery, HomePageQueryData>
