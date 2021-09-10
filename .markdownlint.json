@@ -1,6 +1,7 @@
 {
   "line-length": {
-    "code_blocks": false
+    "code_blocks": false,
+    "line_length": 120
   },
   "code-fence-style": {
     "style": "backtick"

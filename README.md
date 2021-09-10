@@ -6,7 +6,8 @@
 
 [![NuGet Package](https://img.shields.io/nuget/v/XperienceCommunity.CQRS.Web.svg)](https://www.nuget.org/packages/XperienceCommunity.CQRS.Web)
 
-A CQRS implementation influenced by <https://github.com/jbogard/MediatR/> combined with <https://github.com/vkhorikov/CSharpFunctionalExtensions> for Kentico Xperience applications.
+A CQRS implementation influenced by <https://github.com/jbogard/MediatR/>
+combined with <https://github.com/vkhorikov/CSharpFunctionalExtensions> for Kentico Xperience applications.
 
 ## Dependencies
 
@@ -15,15 +16,25 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with
 
 ## How to Use?
 
-1. This library is separated into (3) NuGet packages. Each package is associated with a different part of the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+1. This library is separated into (3) NuGet packages.
+   Each package is associated with a different part of the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+   You can install all of these into your web application project or isolate your Kentico Xperience types behind abstractions.
 
-- `XperienceCommunity.CQRS.Core` - abstractions and implementations for the Domain, Persistence, and Presentation layers to implement.
+   - `XperienceCommunity.CQRS.Core`
 
-- `XperienceCommunity.CQRS.Data` - decorators and base classes for data access implementations.
+     - Abstractions and implementations for the Domain, Persistence, and Presentation layers to implement.
+     - Typically the project consuming this package doesn't have any reference to Kentico Xperience packages or APIs.
 
-- `XperienceCommunity.CQRS.Web` - presentation layer cache and service collection registration utilities
+   - `XperienceCommunity.CQRS.Data`
 
-1. First, install the NuGet package(s) in your ASP.NET Core projects
+     - Decorators and base classes for data access implementations.
+     - The project consuming this package also uses Kentico Xperience data access APIs.
+
+   - `XperienceCommunity.CQRS.Web`
+     - Presentation layer cache and service collection registration utilities.
+     - The project consuming this package is where your presentation logic is located (Razor/View Components/Controllers).
+
+1. First, install the NuGet package(s) in your ASP.NET Core projects (see the example project under [/samples](/tree/main/samples))
 
    ```bash
    dotnet add package XperienceCommunity.CQRS.Core
