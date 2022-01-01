@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.14.4" />
-    <PackageReference Include="Ardalis.GuardClauses" Version="3.1.0" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.27.0" />
+    <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="Kentico.Xperience.Libraries" Version="[13.0.0, 13.1.0)" />
-    <PackageReference Include="WiredViews.Xperience.PageBuilderModeTagHelper" Version="2.0.0" />
+    <PackageReference Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
   </ItemGroup>
 
 </Project>

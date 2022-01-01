@@ -6,7 +6,7 @@
 
 <h1>@Model.Title</h1>
 
-@Model.BodyHTML.Unwrap(HtmlString.Empty)
+@Model.BodyHTML.GetValueOrDefault(HtmlString.Empty)
 
 @if (Model.ImagePath is { HasValue: true, Value: var imagePath })
 {

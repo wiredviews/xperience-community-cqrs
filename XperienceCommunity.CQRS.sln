@@ -1,21 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.CQRS.Core", "src\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj", "{4777EFCD-2303-4816-92BB-56DC9BCAA397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XperienceCommunity.CQRS.Core", "src\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj", "{4777EFCD-2303-4816-92BB-56DC9BCAA397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.CQRS.Data", "src\XperienceCommunity.CQRS.Data\XperienceCommunity.CQRS.Data.csproj", "{E1E24A16-9128-44EF-B5BC-AAECAE74D9C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XperienceCommunity.CQRS.Data", "src\XperienceCommunity.CQRS.Data\XperienceCommunity.CQRS.Data.csproj", "{E1E24A16-9128-44EF-B5BC-AAECAE74D9C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.CQRS.Web", "src\XperienceCommunity.CQRS.Web\XperienceCommunity.CQRS.Web.csproj", "{90C3AC1A-F9F0-44DE-A5BE-89CDFBD7B02D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XperienceCommunity.CQRS.Web", "src\XperienceCommunity.CQRS.Web\XperienceCommunity.CQRS.Web.csproj", "{90C3AC1A-F9F0-44DE-A5BE-89CDFBD7B02D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{776BE07D-BC20-4DD1-9901-60EBF140C4BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.Sandbox.Core", "samples\XperienceCommunity.Sandbox.Core\XperienceCommunity.Sandbox.Core.csproj", "{6B447B57-B4BF-4578-B5C3-69785932F244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XperienceCommunity.Sandbox.Core", "samples\XperienceCommunity.Sandbox.Core\XperienceCommunity.Sandbox.Core.csproj", "{6B447B57-B4BF-4578-B5C3-69785932F244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.Sandbox.Data", "samples\XperienceCommunity.Sandbox.Data\XperienceCommunity.Sandbox.Data.csproj", "{66EE1F23-ED3C-48E6-95EC-7974BEE477F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XperienceCommunity.Sandbox.Data", "samples\XperienceCommunity.Sandbox.Data\XperienceCommunity.Sandbox.Data.csproj", "{66EE1F23-ED3C-48E6-95EC-7974BEE477F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XperienceCommunity.Sandbox.Web", "samples\XperienceCommunity.Sandbox.Web\XperienceCommunity.Sandbox.Web.csproj", "{EE724072-9279-46A5-ADF3-4288E3B5F033}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XperienceCommunity.Sandbox.Web", "samples\XperienceCommunity.Sandbox.Web\XperienceCommunity.Sandbox.Web.csproj", "{EE724072-9279-46A5-ADF3-4288E3B5F033}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4F725109-9731-4650-B366-B605CE5ABB4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cqrs", "cqrs", "{1A42ADE1-5C94-4BB6-B95D-015A3B208B13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E15BD5B-4D3A-4DD9-B4D0-15BC69F7E5DC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.markdownlint.json = .markdownlint.json
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{92137866-BF8D-4313-93B8-A6874E599748}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,9 +44,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4777EFCD-2303-4816-92BB-56DC9BCAA397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -103,9 +119,20 @@ Global
 		{EE724072-9279-46A5-ADF3-4288E3B5F033}.Release|x86.ActiveCfg = Release|Any CPU
 		{EE724072-9279-46A5-ADF3-4288E3B5F033}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{4777EFCD-2303-4816-92BB-56DC9BCAA397} = {1A42ADE1-5C94-4BB6-B95D-015A3B208B13}
+		{E1E24A16-9128-44EF-B5BC-AAECAE74D9C8} = {1A42ADE1-5C94-4BB6-B95D-015A3B208B13}
+		{90C3AC1A-F9F0-44DE-A5BE-89CDFBD7B02D} = {1A42ADE1-5C94-4BB6-B95D-015A3B208B13}
+		{776BE07D-BC20-4DD1-9901-60EBF140C4BA} = {4F725109-9731-4650-B366-B605CE5ABB4D}
 		{6B447B57-B4BF-4578-B5C3-69785932F244} = {776BE07D-BC20-4DD1-9901-60EBF140C4BA}
 		{66EE1F23-ED3C-48E6-95EC-7974BEE477F3} = {776BE07D-BC20-4DD1-9901-60EBF140C4BA}
 		{EE724072-9279-46A5-ADF3-4288E3B5F033} = {776BE07D-BC20-4DD1-9901-60EBF140C4BA}
+		{1A42ADE1-5C94-4BB6-B95D-015A3B208B13} = {4F725109-9731-4650-B366-B605CE5ABB4D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E58FC83C-EAD0-4575-9EB8-DC73512BBE9E}
 	EndGlobalSection
 EndGlobal

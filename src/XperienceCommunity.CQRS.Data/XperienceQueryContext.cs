@@ -1,15 +1,15 @@
 using System.Threading;
 using Ardalis.GuardClauses;
 using CMS.SiteProvider;
-using XperienceCommunity.PageBuilderModeTagHelper;
+using XperienceCommunity.PageBuilderUtilities;
 
 namespace XperienceCommunity.CQRS.Data
 {
     public interface IQueryContext
     {
-         IPageBuilderContext PageBuilderContext { get; }
-         ISiteContext SiteContext { get; }
-         ICultureContext CultureContext { get; }
+        IPageBuilderContext PageBuilderContext { get; }
+        ISiteContext SiteContext { get; }
+        ICultureContext CultureContext { get; }
     }
 
     /// <summary>

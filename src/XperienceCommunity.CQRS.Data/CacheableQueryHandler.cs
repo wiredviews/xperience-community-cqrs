@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using CSharpFunctionalExtensions;
 using XperienceCommunity.CQRS.Core;
-using XperienceCommunity.PageBuilderModeTagHelper;
+using XperienceCommunity.PageBuilderUtilities;
 
 namespace XperienceCommunity.CQRS.Data
 {
@@ -28,7 +28,7 @@ namespace XperienceCommunity.CQRS.Data
             Context = context;
         }
 
-        private readonly HashSet<string> customKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> customKeys = new(StringComparer.OrdinalIgnoreCase);
 
         protected IQueryContext Context { get; }
         protected IPageBuilderContext PageBuilderContext => Context.PageBuilderContext;

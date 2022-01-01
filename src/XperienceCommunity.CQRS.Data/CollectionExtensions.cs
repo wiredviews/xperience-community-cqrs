@@ -19,12 +19,5 @@ namespace System.Collections.Generic
 
             return result.Select(projection).TryFirst();
         }
-
-        public static async Task<IEnumerable<TReturn>> Select<TSource, TReturn>(this Task<IEnumerable<TSource>> source, Func<TSource, TReturn> projection)
-        {
-            var results = await source;
-
-            return results.Select(projection);
-        }
     }
 }

@@ -27,7 +27,6 @@ namespace XperienceCommunity.CQRS.Data
         private readonly IQueryHandler<TQuery, TResponse> handler;
         private readonly IProgressiveCache cache;
         private readonly IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators;
-        private readonly IQueryContext context;
         private readonly ICacheDependenciesStore store;
         private readonly QueryCacheConfiguration config;
 
@@ -35,21 +34,18 @@ namespace XperienceCommunity.CQRS.Data
             IQueryHandler<TQuery, TResponse> handler,
             IProgressiveCache cache,
             IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators,
-            IQueryContext context,
             ICacheDependenciesStore store,
             QueryCacheConfiguration config)
         {
             Guard.Against.Null(handler, nameof(handler));
             Guard.Against.Null(cache, nameof(cache));
             Guard.Against.Null(creators, nameof(creators));
-            Guard.Against.Null(context, nameof(context));
             Guard.Against.Null(store, nameof(store));
             Guard.Against.Null(config, nameof(config));
 
             this.handler = handler;
             this.cache = cache;
             this.creators = creators;
-            this.context = context;
             this.store = store;
             this.config = config;
         }
@@ -79,7 +75,7 @@ namespace XperienceCommunity.CQRS.Data
 
                 if (cs.Cached)
                 {
-                    var keys = creator.DependencyKeys(query, result.Value);
+                    string[] keys = creator.DependencyKeys(query, result.Value);
 
                     store.Store(keys);
 

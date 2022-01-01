@@ -10,7 +10,7 @@ namespace CMS.DocumentEngine
 {
     public static class DocumentQueryExtensions
     {
-        public static async Task<Maybe<TDocument>> FirstOrNoneAsync<TDocument>(this DocumentQuery<TDocument> query, CancellationToken token)
+        public static async Task<Maybe<TDocument>> TryFirst<TDocument>(this DocumentQuery<TDocument> query, CancellationToken token)
             where TDocument : TreeNode, new()
         {
             var result = await query.GetEnumerableTypedResultAsync(cancellationToken: token);
@@ -23,7 +23,7 @@ namespace CMS.DocumentEngine
 
     public static class MultiDocumentQueryExtensions
     {
-        public static async Task<Maybe<TreeNode>> FirstOrNoneAsync(this MultiDocumentQuery query, CancellationToken token)
+        public static async Task<Maybe<TreeNode>> TryFirst(this MultiDocumentQuery query, CancellationToken token)
         {
             var result = await query.GetEnumerableTypedResultAsync(cancellationToken: token);
 
