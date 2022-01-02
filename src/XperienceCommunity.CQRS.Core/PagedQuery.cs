@@ -1,4 +1,3 @@
-using Ardalis.GuardClauses;
 using System;
 using System.Collections.Generic;
 
@@ -39,11 +38,7 @@ namespace XperienceCommunity.CQRS.Core
             int totalItemCount,
             IEnumerable<TItem> items)
         {
-            Guard.Against.Null(query, nameof(query));
-            Guard.Against.Null(items, nameof(items));
-            Guard.Against.Negative(totalItemCount, nameof(totalItemCount));
-
-            TotalItemCount = totalItemCount;
+            TotalItemCount = Math.Clamp(totalItemCount, 0, int.MaxValue);
             CurrentPageIndex = query.PageIndex;
             TotalPageCount = (int)Math.Ceiling((decimal)TotalItemCount / query.PageSize);
             Items = items;
@@ -66,13 +61,10 @@ namespace XperienceCommunity.CQRS.Core
 
         public virtual string CacheValueKey => $"page:{PageIndex}:{PageSize}";
 
-        public PagedQuery(int pageIndex, int pageSize = 10)
+        public PagedQuery(int pageIndex, int pageSize)
         {
-            Guard.Against.Negative(pageIndex, nameof(pageIndex));
-            Guard.Against.NegativeOrZero(pageSize, nameof(pageSize));
-
-            PageIndex = pageIndex;
-            PageSize = pageSize;
+            PageIndex = Math.Clamp(pageIndex, 0, int.MaxValue);
+            PageSize = Math.Clamp(pageSize, 1, int.MaxValue);
         }
     }
 
@@ -89,7 +81,7 @@ namespace XperienceCommunity.CQRS.Core
     }
 
     public abstract class PagedOrderableQuery<TResponse, UItem> :
-        PagedQuery<TResponse, UItem>, 
+        PagedQuery<TResponse, UItem>,
         IPagedOrderableQuery where TResponse : PagedQueryResponse<UItem>
 
     {

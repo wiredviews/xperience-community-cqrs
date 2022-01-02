@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Data\XperienceCommunity.CQRS.Data.csproj" />
@@ -6,8 +6,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.0, 13.1.0)" />
-    <PackageReference Include="XperienceCommunity.QueryExtensions" Version="1.0.0-beta.3" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.18, 13.1.0)" />
+    <PackageReference Include="XperienceCommunity.QueryExtensions" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

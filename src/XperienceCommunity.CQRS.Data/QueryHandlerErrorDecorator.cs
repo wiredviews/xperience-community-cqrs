@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
 using CMS.Core;
 using CSharpFunctionalExtensions;
 using XperienceCommunity.CQRS.Core;
@@ -27,10 +26,6 @@ namespace XperienceCommunity.CQRS.Data
             IEventLogService service,
             ISiteContext context)
         {
-            Guard.Against.Null(handler, nameof(handler));
-            Guard.Against.Null(service, nameof(service));
-            Guard.Against.Null(context, nameof(context));
-
             this.handler = handler;
             this.service = service;
             this.context = context;

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.27.0" />
-    <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
   </ItemGroup>
 
 </Project>

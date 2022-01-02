@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
 using CSharpFunctionalExtensions;
 using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.PageBuilderUtilities;
@@ -21,12 +20,8 @@ namespace XperienceCommunity.CQRS.Data
 
         where TQuery : IQuery<TResponse>
     {
-        public CacheableQueryHandler(IQueryContext context)
-        {
-            Guard.Against.Null(context, nameof(context));
-
-            Context = context;
-        }
+        public CacheableQueryHandler(IQueryContext context) =>
+            Context = context ?? throw new ArgumentNullException(nameof(context));
 
         private readonly HashSet<string> customKeys = new(StringComparer.OrdinalIgnoreCase);
 
@@ -53,12 +48,8 @@ namespace XperienceCommunity.CQRS.Data
         /// Used to add custom keys to the generated set of cache Dependency Keys, not based on the <typeparamref name="TQuery"/> or <typeparamref name="TResponse"/>
         /// </summary>
         /// <param name="setCustomKeys"></param>
-        protected void SetCustomKeys(Action<ICollection<string>> setCustomKeys)
-        {
-            Guard.Against.Null(setCustomKeys, nameof(setCustomKeys));
-
-            setCustomKeys(customKeys);
-        }
+        protected void SetCustomKeys(Action<ICollection<string>> setCustomKeys) =>
+            setCustomKeys?.Invoke(customKeys);
 
         /// <summary>
         /// Overridable to explicitly set the cache dependency keys based on the <typeparamref name="TQuery"/> and <typeparamref name="TResponse"/>

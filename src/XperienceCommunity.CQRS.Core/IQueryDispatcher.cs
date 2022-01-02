@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
 using CSharpFunctionalExtensions;
 
 namespace XperienceCommunity.CQRS.Core
@@ -37,19 +36,13 @@ namespace XperienceCommunity.CQRS.Core
     public class QueryDispatcher : IQueryDispatcher
     {
         private readonly OperationServiceFactory serviceFactory;
-        private static readonly ConcurrentDictionary<Type, object> queryHandlers = new ConcurrentDictionary<Type, object>();
+        private static readonly ConcurrentDictionary<Type, object> queryHandlers = new();
 
-        public QueryDispatcher(OperationServiceFactory serviceFactory)
-        {
-            Guard.Against.Null(serviceFactory, nameof(serviceFactory));
-
-            this.serviceFactory = serviceFactory;
-        }
+        public QueryDispatcher(OperationServiceFactory serviceFactory) =>
+            this.serviceFactory = serviceFactory ?? throw new ArgumentNullException(nameof(serviceFactory));
 
         public Task<Result<TResponse>> Dispatch<TResponse>(IQuery<TResponse> query, CancellationToken token = default)
         {
-            Guard.Against.Null(query, nameof(query));
-
             var queryType = query.GetType();
 
             var handler = (QueryHandlerWrapper<TResponse>)queryHandlers.GetOrAdd(queryType,
@@ -61,8 +54,6 @@ namespace XperienceCommunity.CQRS.Core
 
         public Task<Result<TResponse, TError>> Dispatch<TResponse, TError>(IQuery<TResponse, TError> query, CancellationToken token = default)
         {
-            Guard.Against.Null(query, nameof(query));
-
             var queryType = query.GetType();
 
             var handler = (QueryHandlerWrapper<TResponse, TError>)queryHandlers.GetOrAdd(queryType,

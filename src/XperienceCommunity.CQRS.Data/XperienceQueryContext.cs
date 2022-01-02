@@ -1,5 +1,4 @@
 using System.Threading;
-using Ardalis.GuardClauses;
 using CMS.SiteProvider;
 using XperienceCommunity.PageBuilderUtilities;
 
@@ -63,10 +62,6 @@ namespace XperienceCommunity.CQRS.Data
             ICultureContext cultureContext,
             IPageBuilderContext pageBuilderContext)
         {
-            Guard.Against.Null(siteContext, nameof(siteContext));
-            Guard.Against.Null(cultureContext, nameof(cultureContext));
-            Guard.Against.Null(pageBuilderContext, nameof(pageBuilderContext));
-
             SiteContext = siteContext;
             CultureContext = cultureContext;
             PageBuilderContext = pageBuilderContext;

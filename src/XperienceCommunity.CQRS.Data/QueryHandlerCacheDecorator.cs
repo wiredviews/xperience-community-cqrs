@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
 using CMS.Helpers;
 using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Options;
 using XperienceCommunity.CQRS.Core;
 
 namespace XperienceCommunity.CQRS.Data
@@ -35,19 +35,13 @@ namespace XperienceCommunity.CQRS.Data
             IProgressiveCache cache,
             IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators,
             ICacheDependenciesStore store,
-            QueryCacheConfiguration config)
+            IOptions<QueryCacheConfiguration> config)
         {
-            Guard.Against.Null(handler, nameof(handler));
-            Guard.Against.Null(cache, nameof(cache));
-            Guard.Against.Null(creators, nameof(creators));
-            Guard.Against.Null(store, nameof(store));
-            Guard.Against.Null(config, nameof(config));
-
             this.handler = handler;
             this.cache = cache;
             this.creators = creators;
             this.store = store;
-            this.config = config;
+            this.config = config.Value ?? throw new ArgumentNullException(nameof(config));
         }
 
         public Task<Result<TResponse>> Execute(TQuery query, CancellationToken token = default)
