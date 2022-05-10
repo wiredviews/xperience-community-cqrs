@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
 using CMS.DocumentEngine.Types.Sandbox;
-using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using XperienceCommunity.CQRS.Core;
@@ -19,7 +17,7 @@ namespace XperienceCommunity.Sandbox.Web.Features.Home.Components
 
         public Task<IViewComponentResult> InvokeAsync(HomePage page) =>
             dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-                .View(this, "_HomePage", r => new HomePageViewModel(r));
+                .ViewWithFallbackOnFailure(this, "_HomePage", r => new HomePageViewModel(r));
     }
 
     public class HomePageViewModel

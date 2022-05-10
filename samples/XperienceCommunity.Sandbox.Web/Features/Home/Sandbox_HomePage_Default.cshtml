@@ -8,12 +8,6 @@
     return;
 }
 
-<cache enabled="Cache.IsEnabled" expires-sliding="Cache.Expires" vary-by="@Cache.VaryBy()">
-
-    @Cache.BeginScope()
-
+<scoped-cache>
     <vc:home-page page="node" />
-
-    <cache-dependency cache-keys="Cache.EndScope()" enabled="Cache.IsEnabled" />
-
-</cache>
+</scoped-cache>
