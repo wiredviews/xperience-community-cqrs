@@ -12,30 +12,36 @@
     <Title>$(Product)</Title>
     <PackageProjectUrl>https://github.com/wiredviews/xperience-cqrs</PackageProjectUrl>
     <PackageIcon>wv-logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>xperience;kentico;mvc;aspnetcore</PackageTags>
     <PackageReleaseNotes>https://github.com/wiredviews/xperience-cqrs/releases</PackageReleaseNotes>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
-  </PropertyGroup>
+  <ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)\images\wv-logo.png" Pack="true" Visible="false" PackagePath="" />
+		<None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath=""/>
+	</ItemGroup>
 
   <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
+  <ItemGroup>
+		<Using Include="CSharpFunctionalExtensions" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup Condition=" $(Configuration) == 'Release' ">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
 
 </Project>

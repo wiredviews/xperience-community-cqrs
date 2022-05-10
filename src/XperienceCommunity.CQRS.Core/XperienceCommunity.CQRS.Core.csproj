@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+		<Description>Non-Xperience dependent types and abstractions for Xperience 13.0 content delivery (ex: POCOs and interfaces).</Description>
+		<Title>XperienceCommunity.CQRS.Core</Title>
+	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.27.0" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.1" />
   </ItemGroup>
 
 </Project>

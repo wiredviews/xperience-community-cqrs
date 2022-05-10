@@ -4,12 +4,8 @@
     <ProjectReference Include="..\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.27.0" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.1" />
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.18, 13.1.0)" />
     <PackageReference Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
   </ItemGroup>

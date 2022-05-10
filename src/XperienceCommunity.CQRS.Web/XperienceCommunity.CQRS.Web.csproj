@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
 
@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Scrutor" Version="3.3.0" />
-    <PackageReference Include="WiredViews.Xperience.PageBuilderModeTagHelper" Version="2.0.0" />
+    <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" Version="1.1.0" />
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.18, 13.1.0)" />
   </ItemGroup>
 

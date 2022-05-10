@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/samples/XperienceCommunity.Sandbox.Web/bin/Debug/net5.0/XperienceCommunity.Sandbox.Web.dll",
+            "program": "${workspaceFolder}/samples/XperienceCommunity.Sandbox.Web/bin/Debug/net6.0/XperienceCommunity.Sandbox.Web.dll",
             "args": [],
             "cwd": "${workspaceFolder}/samples/XperienceCommunity.Sandbox.Web",
             "stopAtEntry": false,
