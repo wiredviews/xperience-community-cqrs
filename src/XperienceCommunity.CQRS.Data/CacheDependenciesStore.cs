@@ -1,58 +1,54 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace XperienceCommunity.CQRS.Data
+namespace XperienceCommunity.CQRS.Data;
+
+public interface ICacheDependenciesStore
 {
-    public interface ICacheDependenciesStore
+    void Store(string[] keys);
+}
+
+public interface ICacheDependenciesScope
+{
+    void Begin();
+    IEnumerable<string> End();
+}
+
+public class CacheDependenciesStore : ICacheDependenciesStore, ICacheDependenciesScope
+{
+    private readonly ConcurrentStack<HashSet<string>> keyScopes = new();
+
+    public void Begin() => keyScopes.Push(new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+
+    public void Store(string[] keys)
     {
-        void Store(string[] keys);
-    }
-
-    public interface ICacheDependenciesScope
-    {
-        void Begin();
-        IEnumerable<string> End();
-    }
-
-    public class CacheDependenciesStore : ICacheDependenciesStore, ICacheDependenciesScope
-    {
-        private readonly ConcurrentStack<HashSet<string>> keyScopes = new();
-
-        public void Begin() => keyScopes.Push(new HashSet<string>(StringComparer.OrdinalIgnoreCase));
-
-        public void Store(string[] keys)
+        if (!keyScopes.TryPeek(out var currentScope))
         {
-            if (!keyScopes.TryPeek(out var currentScope))
-            {
-                return;
-            }
-
-            foreach (string key in keys)
-            {
-                currentScope.Add(key);
-            }
+            return;
         }
 
-        public IEnumerable<string> End()
+        foreach (string key in keys)
         {
-            if (!keyScopes.TryPop(out var currentScope))
-            {
-                return Enumerable.Empty<string>();
-            }
+            currentScope.Add(key);
+        }
+    }
 
-            if (!keyScopes.TryPeek(out var parentScope))
-            {
-                return currentScope.AsEnumerable();
-            }
+    public IEnumerable<string> End()
+    {
+        if (!keyScopes.TryPop(out var currentScope))
+        {
+            return Enumerable.Empty<string>();
+        }
 
-            foreach (string? key in currentScope)
-            {
-                parentScope.Add(key);
-            }
-
+        if (!keyScopes.TryPeek(out var parentScope))
+        {
             return currentScope.AsEnumerable();
         }
+
+        foreach (string? key in currentScope)
+        {
+            parentScope.Add(key);
+        }
+
+        return currentScope.AsEnumerable();
     }
 }
