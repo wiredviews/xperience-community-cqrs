@@ -5,6 +5,7 @@
     "k--kato.docomment",
     "editorconfig.editorconfig",
     "davidanson.vscode-markdownlint",
-    "bierner.markdown-preview-github-styles"
+    "bierner.markdown-preview-github-styles",
+    "formulahendry.dotnet-test-explorer"
   ]
 }

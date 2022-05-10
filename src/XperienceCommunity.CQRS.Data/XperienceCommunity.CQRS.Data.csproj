@@ -1,18 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Description>Xperience dependent types and abstractions for Xperience 13.0 content delivery (ex: Data access and interfaces).</Description>
+		<Title>XperienceCommunity.CQRS.Data</Title>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.1" />
-    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.18, 13.1.0)" />
-    <PackageReference Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Using Include="XperienceCommunity.CQRS.Core" />
-    <Using Include="CMS.DocumentEngine" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CSharpFunctionalExtensions" Version="2.29.1" />
+		<PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.58, 13.1.0)" />
+		<PackageReference Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="XperienceCommunity.CQRS.Core" />
+		<Using Include="CMS.DocumentEngine" />
+	</ItemGroup>
 
 </Project>

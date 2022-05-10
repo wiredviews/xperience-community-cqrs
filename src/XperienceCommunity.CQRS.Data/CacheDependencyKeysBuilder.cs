@@ -1,5 +1,4 @@
 using CMS.DataEngine;
-using CMS.DocumentEngine;
 
 namespace XperienceCommunity.CQRS.Data;
 
@@ -292,6 +291,7 @@ public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
     public CacheDependencyKeysBuilder(ISiteContext context) => this.context = context;
 
     public ISet<string> GetKeys() => cacheKeys;
+    public void ClearKeys() => cacheKeys.Clear();
 
     public ICacheDependencyKeysBuilder CustomKey(string key)
     {

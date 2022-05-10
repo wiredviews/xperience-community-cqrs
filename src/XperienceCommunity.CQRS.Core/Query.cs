@@ -20,7 +20,7 @@ public interface ICacheByValueQuery
     string CacheValueKey { get; }
 }
 
-public class NodeGuidQuery<TQueryResponse> : IQuery<TQueryResponse>, ICacheByValueQuery
+public abstract class NodeGuidQuery<TQueryResponse> : IQuery<TQueryResponse>, ICacheByValueQuery
 {
     public NodeGuidQuery(Guid nodeGuid) => NodeGuid = nodeGuid;
 

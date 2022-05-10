@@ -6,8 +6,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.18, 13.1.0)" />
-    <PackageReference Include="XperienceCommunity.QueryExtensions" Version="1.0.0" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="13.0.69" />
+    <PackageReference Include="XperienceCommunity.QueryExtensions" Version="1.1.0" />
   </ItemGroup>
 
 </Project>
