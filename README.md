@@ -11,8 +11,8 @@ combined with <https://github.com/vkhorikov/CSharpFunctionalExtensions> for Kent
 
 ## Dependencies
 
-This package is compatible with ASP.NET Core 5+ and is designed to be used with
-.NET Core / .NET 5 applications integrated with Kentico Xperience 13.0.
+This package is compatible with ASP.NET Core 6+ and is designed to be used with
+.NET Core / .NET 6 applications integrated with Kentico Xperience 13.0.
 
 ## How to Use?
 
@@ -71,7 +71,7 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with
                    return new HomePageQueryData(homePage.Fields.Title, bodyHTML);
                });
 
-       protected override void AddDependencyKeys(
+       protected override ICacheDependencyKeysBuilder AddDependencyKeys(
            HomePageQuery query,
            HomePageQueryData response,
            ICacheDependencyKeysBuilder builder) =>
@@ -105,23 +105,22 @@ This package is compatible with ASP.NET Core 5+ and is designed to be used with
 
        public Task<IViewComponentResult> Invoke() =>
            dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-               .View(this, "_HomePage", data => new HomePageViewModel(data));
+               .ViewWithFallbackOnFailure(this, "_HomePage", data => new HomePageViewModel(data));
    }
    ```
 
    ```razor
-   @using CSharpFunctionalExtensions
    @using Microsoft.AspNetCore.Html
    @using XperienceCommunity.Sandbox.Web.Features.Home.Components
    @model HomePageViewModel
 
    <h1>@Model.Title</h1>
 
-   @Model.BodyHTML.Unwrap(HtmlString.Empty)
+   @Model.BodyHTML.GetValueOrDefault(HtmlString.Empty)
 
-   @if (Model.ImagePath is { HasValue: true, Value: var imagePath })
+   @if (Model.ImagePath.HasValue)
    {
-       <img src="@imagePath" alt="@Model.Title" />
+       <img src="@Model.ImagePath.GetValueOrThrow()" alt="@Model.Title" />
    }
    ```
 
