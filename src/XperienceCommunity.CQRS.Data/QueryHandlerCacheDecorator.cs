@@ -65,6 +65,8 @@ namespace XperienceCommunity.CQRS.Data
                 if (result.IsFailure)
                 {
                     cs.Cached = false;
+
+                    // store.MarkFailure
                 }
 
                 if (cs.Cached)

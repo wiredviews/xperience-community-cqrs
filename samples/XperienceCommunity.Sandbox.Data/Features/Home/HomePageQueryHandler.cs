@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using CMS.DocumentEngine.Types.Sandbox;
 using CSharpFunctionalExtensions;
 using Kentico.Content.Web.Mvc;
-using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.CQRS.Data;
 using XperienceCommunity.Sandbox.Core.Features.Home;
 
@@ -58,12 +57,9 @@ namespace XperienceCommunity.Sandbox.Data.Features.Home
                 : new HomePageImageData(image.AttachmentGUID, url.RelativePath);
         }
 
-        protected override void AddDependencyKeys(HomePageQuery query, HomePageQueryData response, ICacheDependencyKeysBuilder builder)
-        {
+        protected override void AddDependencyKeys(HomePageQuery query, HomePageQueryData response, ICacheDependencyKeysBuilder builder) =>
             builder
-                .PageType(HomePage.CLASS_NAME);
-
-            response.Image.Execute(i => builder.Attachment(i.ImageGuid));
-        }
+                .SitePageType(HomePage.CLASS_NAME)
+                .Attachment(response.Image.Map(i => i.ImageGuid).GetValueOrDefault());
     }
 }
