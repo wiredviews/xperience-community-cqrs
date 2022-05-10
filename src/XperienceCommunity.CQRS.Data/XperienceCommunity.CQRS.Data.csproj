@@ -10,4 +10,9 @@
     <PackageReference Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="XperienceCommunity.CQRS.Core" />
+    <Using Include="CMS.DocumentEngine" />
+  </ItemGroup>
+
 </Project>

@@ -28,3 +28,12 @@ public class NodeGuidQuery<TQueryResponse> : IQuery<TQueryResponse>, ICacheByVal
 
     public Guid NodeGuid { get; }
 }
+
+public abstract class NodeAliasPathQuery<TQueryResponse> : IQuery<TQueryResponse>, ICacheByValueQuery
+{
+    public string NodeAliasPath { get; }
+
+    public virtual string CacheValueKey => NodeAliasPath.ToLowerInvariant();
+
+    public NodeAliasPathQuery(string nodeAliasPath) => NodeAliasPath = nodeAliasPath ?? "";
+}

@@ -1,80 +1,155 @@
-using System;
-using System.Linq;
+using System.Security.Claims;
 using CMS.DocumentEngine;
 using Kentico.Content.Web.Mvc;
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using XperienceCommunity.CQRS.Data;
-using XperienceCommunity.PageBuilderModeTagHelper;
+using XperienceCommunity.PageBuilderUtilities;
 
-namespace XperienceCommunity.CQRS.Web
+namespace XperienceCommunity.CQRS.Web;
+
+public class RazorCacheConfiguration
 {
     /// <summary>
-    /// Settings for Razor (CacheTagHelper) cache configuration
+    /// Sets the sliding cache expiration for view caching.
     /// </summary>
-    public class RazorCacheConfiguration
+    public TimeSpan CacheSlidingExpiration { get; set; }
+    /// <summary>
+    /// Sets the absolute cache expiration for view caching.
+    /// </summary>
+    /// <value></value>
+    public TimeSpan CacheAbsoluteExpiration { get; set; }
+    /// <summary>
+    /// Enables or disables view caching. Defaults to true.
+    /// </summary>
+    public bool IsEnabled { get; set; } = true;
+}
+
+/// <summary>
+/// Provides cache configuration for Razor views (HTML caching).
+/// </summary>
+/// <remarks>
+/// Should be injected into Views using _ViewImports.cshtml
+/// </remarks>
+public class RazorCacheService
+{
+    private readonly IPageBuilderContext pageBuilderContext;
+    private readonly IContactContext contactContext;
+    private readonly ICacheDependenciesScope scope;
+    private readonly IPageDataContextRetriever retriever;
+    private readonly IHttpContextAccessor accessor;
+    private readonly RazorCacheConfiguration config;
+
+    public RazorCacheService(
+        IPageBuilderContext pageBuilderContext,
+        IContactContext contactContext,
+        ICacheDependenciesScope scope,
+        IOptions<RazorCacheConfiguration> config,
+        IPageDataContextRetriever retriever,
+        IHttpContextAccessor accessor)
     {
-        /// <summary>
-        /// Defaults to 1 minute
-        /// </summary>
-        /// <returns></returns>
-        public TimeSpan CacheExpiration { get; set; } = TimeSpan.FromMinutes(1);
+        this.pageBuilderContext = pageBuilderContext;
+        this.contactContext = contactContext;
+        this.scope = scope;
+        this.retriever = retriever;
+        this.accessor = accessor;
+        this.config = config.Value;
     }
 
     /// <summary>
-    /// Exposes helpful properties and methods from other classes when interacting and initializing with Razor caching (CacheTagHelper)
+    /// Based on the <see cref="RazorCacheConfiguration.CacheSlidingExpiration" />
     /// </summary>
-    public class RazorCacheService
+    public TimeSpan SlidingExpiration => config.CacheSlidingExpiration;
+    /// <summary>
+    /// Based on <see cref="RazorCacheConfiguration.CacheAbsoluteExpiration" />
+    /// </summary>
+    public TimeSpan AbsoluteExpiration => config.CacheAbsoluteExpiration;
+
+    /// <summary>
+    /// Razor view caching is only enabled if the Page Builder is in "Live" mode (not Preview or Edit),
+    /// no query caching has failed, and the <see cref="RazorCacheConfiguration.IsEnabled" /> is true 
+    /// </summary>
+    public bool IsEnabled =>
+        pageBuilderContext.IsLiveMode &&
+        scope.IsCacheEnabled &&
+        config.IsEnabled;
+
+    /// <summary>
+    /// Cached content is dependent on the current Page (Document).
+    /// Falls back to the Request Path if no Page Data is available.
+    /// </summary>
+    /// <returns></returns>
+    public string VaryByPage() =>
+        retriever.TryRetrieve<TreeNode>(out var data)
+            ? $"DocID={data.Page.DocumentID}"
+            : $"Path={accessor.HttpContext?.Request.Path}";
+
+    /// <summary>
+    /// Cached content is dependent on the current Contact's Persona combined with <see cref="VaryByPage"/>.
+    /// Falls back to <see cref="VaryByPage"/>.
+    /// </summary>
+    /// <returns></returns>
+    public string VaryByPersona() =>
+        contactContext.Contact
+            .Bind(c => c.PersonaID)
+            .Map(personaID => $"PersonaID={personaID}|{VaryByPage()}")
+            .GetValueOrDefault(() => VaryByPage());
+
+    /// <summary>
+    /// Cached content is dependent on <see cref="VaryByPage" /> and whether or not the current user is authenticated.
+    /// </summary>
+    /// <returns></returns>
+    public string VaryByAuthenticated()
     {
-        private readonly IPageBuilderContext context;
-        private readonly ICacheDependenciesScope scope;
-        private readonly RazorCacheConfiguration config;
-        private readonly IPageDataContextRetriever retriever;
+        var principal = accessor.HttpContext?.User;
 
-        public RazorCacheService(IPageBuilderContext context, ICacheDependenciesScope scope, IOptions<RazorCacheConfiguration> config, IPageDataContextRetriever retriever)
+        if (principal is null || principal.Identity is not ClaimsIdentity identity)
         {
-            this.retriever = retriever;
-            this.scope = scope;
-            this.context = context;
-            this.config = config.Value;
+            return $"{VaryByPage()}|AuthN:False";
         }
 
-        /// <summary>
-        /// Expiration length for cached content
-        /// </summary>
-        public TimeSpan Expires => config.CacheExpiration;
-
-        /// <summary>
-        /// True if caching is currently enabled based on the <see cref="IPageBuilderContext" />
-        /// </summary>
-        public bool IsEnabled => context.IsLiveMode;
-
-        /// <summary>
-        /// Starts a cache dependencies scope
-        /// </summary>
-        /// <returns></returns>
-        public HtmlString BeginScope()
-        {
-            scope.Begin();
-
-            return HtmlString.Empty;
-        }
-
-        /// <summary>
-        /// Ends a cache dependencies scope and returns the collected dependency keys
-        /// </summary>
-        /// <returns></returns>
-        public string[] EndScope() =>
-            scope.End().ToArray();
-
-        /// <summary>
-        /// The default 'vary by' for cached content which varies by the current Document
-        /// </summary>
-        /// <returns></returns>
-        public string VaryBy() =>
-            retriever.TryRetrieve<TreeNode>(out var data)
-                ? data.Page.DocumentGUID.ToString()
-                : "";
+        return $"{VaryByPage()}|AuthN:{identity.IsAuthenticated}";
     }
 
+    /// <summary>
+    /// Cached content is dependent on <see cref="VaryByPage" /> and the <see cref="CMS.Membership.UserInfo.UserID" /> of the current user.
+    /// </summary>
+    /// <returns></returns>
+    public string VaryByUser()
+    {
+        var principal = accessor.HttpContext?.User;
+
+        if (principal is null || principal.Identity is not ClaimsIdentity identity)
+        {
+            return $"{VaryByPage()}|User:anonymous";
+        }
+
+        string id = identity.Claims
+            .Where(c => c.Type == ClaimTypes.NameIdentifier)
+            .Select(c => c.Value)
+            .FirstOrDefault() ?? identity.Name ?? "anonymous";
+
+        return $"{VaryByPage()}|User:{id}";
+    }
+
+
+    /// <summary>
+    /// Begins a cache scope, capturing all successive cache dependencies generated by operations.
+    /// </summary>
+    /// <remarks>Should be followed by a call to <see cref="EndScope"/></remarks>
+    /// <returns></returns>
+    public HtmlString BeginScope()
+    {
+        scope.Begin();
+
+        return HtmlString.Empty;
+    }
+
+    /// <summary>
+    /// Ends a cache scope, returning all captured cache dependencies
+    /// </summary>
+    /// <remarks>Should be preceeded by a call to <see cref="BeginScope"/></remarks>
+    /// <returns></returns>
+    public string[] EndScope() => scope.End().ToArray();
 }

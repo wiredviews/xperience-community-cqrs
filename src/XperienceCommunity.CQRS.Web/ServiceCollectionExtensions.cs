@@ -1,9 +1,8 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.CQRS.Data;
-using XperienceCommunity.PageBuilderModeTagHelper;
+using XperienceCommunity.PageBuilderUtilities;
 
 namespace XperienceCommunity.CQRS.Web
 {
@@ -17,7 +16,8 @@ namespace XperienceCommunity.CQRS.Web
                 .AddSingleton<IPageBuilderContext, XperiencePageBuilderContext>()
                 .Configure<RazorCacheConfiguration>(c =>
                 {
-                    c.CacheExpiration = TimeSpan.FromMinutes(1);
+                    c.CacheAbsoluteExpiration = TimeSpan.FromMinutes(3);
+                    c.CacheSlidingExpiration = TimeSpan.FromMinutes(1);
                 })
                 .AddScoped<RazorCacheService>()
                 .AddScoped(s =>

@@ -14,8 +14,10 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
 
     where TQuery : IQuery<TResponse>
 {
-    public CacheableQueryHandler(IQueryContext context) =>
-        Context = context ?? throw new ArgumentNullException(nameof(context));
+    public CacheableQueryHandler(IQueryContext context)
+    {
+        Context = context;
+    }
 
     private readonly HashSet<string> customKeys = new(StringComparer.OrdinalIgnoreCase);
 
@@ -31,9 +33,8 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
     public string[] DependencyKeys(TQuery query, TResponse response)
     {
         var builder = new CacheDependencyKeysBuilder(SiteContext);
-        builder.CustomKeys(customKeys);
-
-        AddDependencyKeys(query, response, builder);
+        _ = builder.CustomKeys(customKeys);
+        _ = AddDependencyKeys(query, response, builder);
 
         return builder.GetKeys().ToArray();
     }
@@ -42,8 +43,14 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
     /// Used to add custom keys to the generated set of cache Dependency Keys, not based on the <typeparamref name="TQuery"/> or <typeparamref name="TResponse"/>
     /// </summary>
     /// <param name="setCustomKeys"></param>
-    protected void SetCustomKeys(Action<ICollection<string>> setCustomKeys) =>
-        setCustomKeys?.Invoke(customKeys);
+    protected void SetCustomKeys(Action<ICacheDependencyKeysBuilder> setCustomKeys)
+    {
+        var builder = new CacheDependencyKeysBuilder(SiteContext);
+
+        setCustomKeys(builder);
+
+        customKeys.UnionWith(builder.GetKeys());
+    }
 
     /// <summary>
     /// Overridable to explicitly set the cache dependency keys based on the <typeparamref name="TQuery"/> and <typeparamref name="TResponse"/>
@@ -52,24 +59,24 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
     /// <param name="response"></param>
     /// <param name="builder"></param>
     /// <returns></returns>
-    protected virtual void AddDependencyKeys(TQuery query, TResponse response, ICacheDependencyKeysBuilder builder) { }
+    protected virtual ICacheDependencyKeysBuilder AddDependencyKeys(TQuery query, TResponse response, ICacheDependencyKeysBuilder builder) => builder;
 
     /// <inheritdoc/>
     public virtual object[] ItemNameParts(TQuery query) =>
         query is ICacheByValueQuery cacheByValueQuery
             ? new object[]
                 {
-                    query.GetType().Name,
-                    SiteContext.SiteName,
-                    CultureContext.CultureCode,
-                    $"is-live:{PageBuilderContext.IsLiveMode}",
-                    cacheByValueQuery.CacheValueKey
+                        query.GetType().Name,
+                        SiteContext.SiteName,
+                        CultureContext.CultureCode,
+                        $"is-live:{PageBuilderContext.IsLiveMode}",
+                        cacheByValueQuery.CacheValueKey
                 }
             : new object[]
                 {
-                    query.GetType().Name,
-                    SiteContext.SiteName,
-                    CultureContext.CultureCode,
-                    $"is-live:{PageBuilderContext.IsLiveMode}"
+                        query.GetType().Name,
+                        SiteContext.SiteName,
+                        CultureContext.CultureCode,
+                        $"is-live:{PageBuilderContext.IsLiveMode}"
                 };
 }

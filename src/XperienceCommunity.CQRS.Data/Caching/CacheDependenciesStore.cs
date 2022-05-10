@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace XperienceCommunity.CQRS.Data.Caching;
+namespace XperienceCommunity.CQRS.Data;
 
 public interface ICacheDependenciesStore
 {
