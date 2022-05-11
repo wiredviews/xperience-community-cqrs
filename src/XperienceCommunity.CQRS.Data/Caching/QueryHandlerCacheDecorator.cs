@@ -1,19 +1,12 @@
 using CMS.Helpers;
 using Microsoft.Extensions.Options;
-using XperienceCommunity.CQRS.Core;
 
 namespace XperienceCommunity.CQRS.Data;
 
 public class QueryCacheConfiguration
 {
-    public QueryCacheConfiguration(bool isEnabled, TimeSpan cacheItemDuration)
-    {
-        IsEnabled = isEnabled;
-        CacheItemDuration = cacheItemDuration;
-    }
-
-    public bool IsEnabled { get; }
-    public TimeSpan CacheItemDuration { get; }
+    public bool IsEnabled { get; set; }
+    public TimeSpan CacheItemDuration { get; set; }
 }
 
 /// <summary>

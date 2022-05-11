@@ -14,15 +14,17 @@ namespace XperienceCommunity.CQRS.Web
                 .AddSingleton<ISiteContext, XperienceSiteContext>()
                 .AddSingleton<ICultureContext, XperienceCultureContext>()
                 .AddSingleton<IPageBuilderContext, XperiencePageBuilderContext>()
+                .AddSingleton<IContactContext, XperienceContactContext>()
                 .Configure<RazorCacheConfiguration>(c =>
                 {
                     c.CacheAbsoluteExpiration = TimeSpan.FromMinutes(3);
                     c.CacheSlidingExpiration = TimeSpan.FromMinutes(1);
                 })
                 .AddScoped<RazorCacheService>()
-                .AddScoped(s =>
+                .Configure<QueryCacheConfiguration>(config =>
                 {
-                    return new QueryCacheConfiguration(true, TimeSpan.FromMinutes(5));
+                    config.CacheItemDuration = TimeSpan.FromMinutes(5);
+                    config.IsEnabled = true;
                 })
                 .Scan(s => s
                     .FromAssemblies(assemblies)
