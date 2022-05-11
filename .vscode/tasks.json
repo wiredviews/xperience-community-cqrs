@@ -36,6 +36,33 @@
         "reveal": "silent"
       },
       "problemMatcher": "$msCompile"
-    }
+    },
+
+    {
+      "label": "Xperience: Build",
+      "detail": "Build the Kentico Xperience Content Delivery ASP.NET Core application",
+      "command": "dotnet",
+      "type": "process",
+      "options": {
+        "cwd": "${workspaceFolder}/samples/XperienceCommunity.Sandbox.Web/"
+      },
+      "args": [
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Xperience: Watch",
+      "command": "dotnet",
+      "detail": "Start the Kentico Xperience Content Delivery ASP.NET Core application in 'watch' mode",
+      "type": "process",
+      "options": {
+        "cwd": "${workspaceFolder}/samples/XperienceCommunity.Sandbox.Web/"
+      },
+      "args": ["watch"],
+      "problemMatcher": "$msCompile"
+    },
   ]
 }

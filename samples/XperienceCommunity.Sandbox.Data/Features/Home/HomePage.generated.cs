@@ -80,7 +80,7 @@ namespace CMS.DocumentEngine.Types.Sandbox
 
 
         /// <summary>
-        /// Description HTML.
+        /// Description.
         /// </summary>
         [DatabaseField]
         public string HomePageDescriptionHTML
@@ -97,7 +97,7 @@ namespace CMS.DocumentEngine.Types.Sandbox
 
 
         /// <summary>
-        /// Hero Image.
+        /// Hero.
         /// </summary>
         [DatabaseField]
         public Guid HomePageHeroImage
@@ -181,7 +181,7 @@ namespace CMS.DocumentEngine.Types.Sandbox
 
 
             /// <summary>
-            /// Description HTML.
+            /// Description.
             /// </summary>
             public string DescriptionHTML
             {
@@ -197,7 +197,7 @@ namespace CMS.DocumentEngine.Types.Sandbox
 
 
             /// <summary>
-            /// Hero Image.
+            /// Hero.
             /// </summary>
             public DocumentAttachment HeroImage
             {

@@ -12,4 +12,8 @@
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="13.0.69" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <UserSecretsId>46541398-b80d-468f-b76a-9f0e18f93e28</UserSecretsId>
+  </PropertyGroup>
+
 </Project>

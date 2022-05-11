@@ -1,12 +1,27 @@
 ﻿{
   "profiles": {
-    "XperienceCommunity.Sandbox.Web": {
+    "dotnet run XperienceCommunity.Sandbox.Web": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "5001",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "true"
+      }
+    },
+    "dotnet watch XperienceCommunity.Sandbox.Web": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "workingDirectory": "$(ProjectDir)",
+      "commandLineArgs": "watch",
+      "applicationUrl": "http://localhost:5000;https://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "5001",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "true"
       }
     }
   }

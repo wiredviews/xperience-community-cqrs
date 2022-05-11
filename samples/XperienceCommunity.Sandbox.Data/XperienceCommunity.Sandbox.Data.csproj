@@ -10,4 +10,9 @@
     <PackageReference Include="XperienceCommunity.QueryExtensions" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="CMS.AssemblyDiscoverableAttribute">
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>
