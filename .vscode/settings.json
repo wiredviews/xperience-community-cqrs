@@ -6,10 +6,11 @@
     "omnisharp.enableImportCompletion": true,
     
     "csharp.semanticHighlighting.enabled": true,
+
+    "editor.formatOnSave": true,
     
     "[csharp]": {
         "editor.semanticHighlighting.enabled": true,
-        "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.fixAll": true,
             "source.organizeImports": true

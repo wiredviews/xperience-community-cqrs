@@ -128,6 +128,11 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with
 
 - TODO
 
+## Contributing
+
+To build this project, you must have v6.0.300 or higher
+of the [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed.
+
 ## References
 
 ### Kentico Xperience
