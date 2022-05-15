@@ -35,23 +35,21 @@ jobs:
       - name: Test Solution
         run: dotnet test --configuration Release --no-build --no-restore
 
-      - name: Create PreRelease Artifact
-        run: dotnet pack ${{ env.PROJECT_PATH }} -c Release --no-build --include-symbols -o ./artifacts/prerelease --version-suffix prerelease-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT
-
-      - name: 'Save prerelease artifact'
-        uses: actions/upload-artifact@v3
+      - name: 'Pack and Publish: Core'
+        uses: ./.github/actions/pack-and-publish
         with:
-          name: prerelease
-          path: ./artifacts/prerelease/*
-
-      - name: Create Release Artifact
-        run: dotnet pack ${{ env.PROJECT_PATH }} -c Release --no-build --include-symbols -o ./artifacts/release
-
-      - name: 'Save release artifact'
-        uses: actions/upload-artifact@v3
+          projectPath: './src/XperienceCommunity.CQRS.Core'
+          preReleaseVersion: ${{ github.run_number }}-${{ github.run_attempt }}
+      - name: 'Pack and Publish: Data'
+        uses: ./.github/actions/pack-and-publish
         with:
-          name: release
-          path: ./artifacts/release/*
+          projectPath: './src/XperienceCommunity.CQRS.Data'
+          preReleaseVersion: ${{ github.run_number }}-${{ github.run_attempt }}
+      - name: 'Pack and Publish: Web'
+        uses: ./.github/actions/pack-and-publish
+        with:
+          projectPath: './src/XperienceCommunity.CQRS.Web'
+          preReleaseVersion: ${{ github.run_number }}-${{ github.run_attempt }}
 
   publishPreRelease:
     name: Publish PreRelease NuGet Package
