@@ -9,14 +9,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Scrutor" Version="4.1.0" />
-    <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" Version="1.1.0" />
+    <PackageReference Include="Scrutor" />
+    <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" />
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.58, 13.1.0)" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
     <ProjectReference Include="..\XperienceCommunity.CQRS.Data\XperienceCommunity.CQRS.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="XperienceCommunity.CQRS.Core" />
+    <Using Include="XperienceCommunity.CQRS.Data" />
   </ItemGroup>
 
 </Project>

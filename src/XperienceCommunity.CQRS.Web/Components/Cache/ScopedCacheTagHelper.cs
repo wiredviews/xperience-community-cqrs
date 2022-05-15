@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
-using XperienceCommunity.CQRS.Data;
 using XperienceCommunity.CQRS.Web;
 
 namespace Microsoft.AspNetCore.Mvc.TagHelpers;

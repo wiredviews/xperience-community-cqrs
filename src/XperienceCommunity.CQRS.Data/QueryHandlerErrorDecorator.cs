@@ -1,5 +1,4 @@
 using CMS.Core;
-using XperienceCommunity.CQRS.Core;
 
 namespace XperienceCommunity.CQRS.Data;
 

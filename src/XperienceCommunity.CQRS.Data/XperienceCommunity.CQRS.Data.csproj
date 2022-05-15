@@ -10,9 +10,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CSharpFunctionalExtensions" Version="2.29.1" />
+		<PackageReference Include="CSharpFunctionalExtensions" />
 		<PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.58, 13.1.0)" />
-		<PackageReference Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
+		<PackageReference Include="XperienceCommunity.PageBuilderUtilities" />
 	</ItemGroup>
 
 	<ItemGroup>

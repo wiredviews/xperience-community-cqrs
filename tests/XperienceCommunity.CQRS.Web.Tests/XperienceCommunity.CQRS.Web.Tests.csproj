@@ -12,10 +12,12 @@
     <PackageReference Include="AutoFixture.NUnit3" />
     <PackageReference Include="AutoFixture.AutoNSubstitute" />
     <PackageReference Include="FluentAssertions"/>
+    <PackageReference Include="Kentico.Xperience.Libraries" Version="13.0.*" />
+    <PackageReference Include="Kentico.Xperience.Libraries.Tests" Version="13.0.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
+    <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Web\XperienceCommunity.CQRS.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,6 @@ using Kentico.Content.Web.Mvc;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using XperienceCommunity.CQRS.Data;
 using XperienceCommunity.PageBuilderUtilities;
 
 namespace XperienceCommunity.CQRS.Web;

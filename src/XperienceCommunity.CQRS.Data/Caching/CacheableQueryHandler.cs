@@ -1,4 +1,3 @@
-using XperienceCommunity.CQRS.Core;
 using XperienceCommunity.PageBuilderUtilities;
 
 namespace XperienceCommunity.CQRS.Data;
@@ -14,10 +13,7 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
 
     where TQuery : IQuery<TResponse>
 {
-    public CacheableQueryHandler(IQueryContext context)
-    {
-        Context = context;
-    }
+    public CacheableQueryHandler(IQueryContext context) => Context = context;
 
     private readonly HashSet<string> customKeys = new(StringComparer.OrdinalIgnoreCase);
 

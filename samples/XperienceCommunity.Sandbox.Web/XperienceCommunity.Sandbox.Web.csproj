@@ -7,8 +7,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" Version="1.1.0" />
-    <PackageReference Include="XperienceCommunity.PageTemplateUtilities" Version="1.0.0" />
+    <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" />
+    <PackageReference Include="XperienceCommunity.PageTemplateUtilities" />
     <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="13.0.69" />
   </ItemGroup>
 
