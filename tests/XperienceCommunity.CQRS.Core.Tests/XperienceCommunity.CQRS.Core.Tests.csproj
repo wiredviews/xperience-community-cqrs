@@ -12,10 +12,18 @@
     <PackageReference Include="AutoFixture.NUnit3" />
     <PackageReference Include="AutoFixture.AutoNSubstitute" />
     <PackageReference Include="FluentAssertions"/>
+    <PackageReference Include="System.ComponentModel.TypeConverter" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Core\XperienceCommunity.CQRS.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <Using Include="AutoFixture.NUnit3" />
+    <Using Include="FluentAssertions" />
+    <Using Include="NSubstitute" />
   </ItemGroup>
 
 </Project>

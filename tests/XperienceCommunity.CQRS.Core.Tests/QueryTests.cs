@@ -1,6 +1,3 @@
-using FluentAssertions;
-using NUnit.Framework;
-
 namespace XperienceCommunity.CQRS.Core.Tests;
 
 public class QueryTests
@@ -18,7 +15,7 @@ public class QueryTests
     [Test]
     public void NodeAliasPathQuery_Will_Generate_A_CacheValueKey()
     {
-        var path = "/path/to/node";
+        string? path = "/path/to/node";
 
         var sut = new TestNodeAliasPathQuery(path);
 

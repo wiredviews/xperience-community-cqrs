@@ -8,15 +8,14 @@ using XperienceCommunity.Sandbox.Web.Features.Home;
     typeof(HomePageTemplateProperties),
     "~/Features/Home/Sandbox.HomePage_Default.cshtml")]
 
-namespace XperienceCommunity.Sandbox.Web.Features.Home
+namespace XperienceCommunity.Sandbox.Web.Features.Home;
+
+public class HomePagePageTemplates : PageTypePageTemplateFilter
 {
-    public class HomePagePageTemplates : PageTypePageTemplateFilter
-    {
-        public override string PageTypeClassName => HomePage.CLASS_NAME;
-    }
+    public override string PageTypeClassName => HomePage.CLASS_NAME;
+}
 
-    public class HomePageTemplateProperties : IPageTemplateProperties
-    {
+public class HomePageTemplateProperties : IPageTemplateProperties
+{
 
-    }
 }

@@ -1,18 +1,27 @@
 <Project>
-  <ItemGroup>
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.1" />
-    <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" Version="1.1.0" />
-    <PackageReference Include="XperienceCommunity.PageTemplateUtilities" Version="1.0.0" />
-    <PackageReference Include="XperienceCommunity.QueryExtensions" Version="1.1.0" />
-    <PackageReference Include="Scrutor" Version="4.1.0" />
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
 
-    <!-- Test Packages -->
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-    <PackageReference Include="coverlet.collector" Version="3.1.2" />
-    <PackageReference Include="AutoFixture.NUnit3" Version="4.17.0" />
-    <PackageReference Include="AutoFixture.AutoNSubstitute" Version="4.17.0" />
-    <PackageReference Include="FluentAssertions" Version="6.6.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageVersion Include="CSharpFunctionalExtensions" Version="2.29.1" />
+		<PackageVersion Include="XperienceCommunity.PageBuilderTagHelpers" Version="1.1.0" />
+		<PackageVersion Include="XperienceCommunity.PageBuilderUtilities" Version="1.1.0" />
+		<PackageVersion Include="XperienceCommunity.PageTemplateUtilities" Version="1.0.0" />
+		<PackageVersion Include="XperienceCommunity.QueryExtensions" Version="1.1.0" />
+		<PackageVersion Include="Scrutor" Version="4.1.0" />
+		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+		<PackageVersion Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
+		<PackageVersion Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.16, 13.1.0)" />
+
+		<!-- Test Packages -->
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageVersion Include="NUnit" Version="3.13.3" />
+		<PackageVersion Include="NUnit3TestAdapter" Version="4.2.1" />
+		<PackageVersion Include="coverlet.collector" Version="3.1.2" />
+		<PackageVersion Include="AutoFixture.NUnit3" Version="4.17.0" />
+		<PackageVersion Include="AutoFixture.AutoNSubstitute" Version="4.17.0" />
+		<PackageVersion Include="FluentAssertions" Version="6.6.0" />
+		<PackageVersion Include="Kentico.Xperience.Libraries.Tests" Version="13.0.69" />
+	</ItemGroup>
 </Project>

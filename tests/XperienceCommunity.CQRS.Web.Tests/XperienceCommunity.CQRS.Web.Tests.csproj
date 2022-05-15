@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
@@ -12,12 +12,20 @@
     <PackageReference Include="AutoFixture.NUnit3" />
     <PackageReference Include="AutoFixture.AutoNSubstitute" />
     <PackageReference Include="FluentAssertions"/>
-    <PackageReference Include="Kentico.Xperience.Libraries" Version="13.0.*" />
-    <PackageReference Include="Kentico.Xperience.Libraries.Tests" Version="13.0.*" />
+    <PackageReference Include="Kentico.Xperience.Libraries.Tests" VersionOverride="13.0.69" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" VersionOverride="13.0.69" />
+    <PackageReference Include="System.ComponentModel.TypeConverter" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\XperienceCommunity.CQRS.Web\XperienceCommunity.CQRS.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <Using Include="AutoFixture.NUnit3" />
+    <Using Include="FluentAssertions" />
+    <Using Include="NSubstitute" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" />
     <PackageReference Include="XperienceCommunity.PageTemplateUtilities" />
-    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="13.0.69" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" VersionOverride="13.0.69" />
   </ItemGroup>
 
   <PropertyGroup>

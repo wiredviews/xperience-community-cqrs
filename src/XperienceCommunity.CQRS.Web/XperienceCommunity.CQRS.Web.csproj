@@ -11,7 +11,11 @@
   <ItemGroup>
     <PackageReference Include="Scrutor" />
     <PackageReference Include="XperienceCommunity.PageBuilderTagHelpers" />
-    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.58, 13.1.0)" />
+    <PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
   </ItemGroup>
 
   <ItemGroup>

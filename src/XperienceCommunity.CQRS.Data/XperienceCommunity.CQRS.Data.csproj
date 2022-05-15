@@ -11,8 +11,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="CSharpFunctionalExtensions" />
-		<PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" Version="[13.0.58, 13.1.0)" />
+		<PackageReference Include="Kentico.Xperience.AspNetCore.WebApp" />
 		<PackageReference Include="XperienceCommunity.PageBuilderUtilities" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
