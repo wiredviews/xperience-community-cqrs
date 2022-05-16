@@ -1,29 +1,29 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+using XperienceCommunity.CQRS.Web;
 using XperienceCommunity.PageBuilderUtilities;
 
-namespace XperienceCommunity.CQRS.Web;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCQRS(this IServiceCollection services, params Assembly[] assemblies) =>
+    /// <summary>
+    /// Adds CQRS types and configuration to DI.
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="assemblies"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddXperienceCQRS(this IServiceCollection services, params Assembly[] assemblies) =>
         services
             .AddSingleton<IQueryContext, XperienceQueryContext>()
             .AddSingleton<ISiteContext, XperienceSiteContext>()
             .AddSingleton<ICultureContext, XperienceCultureContext>()
             .AddSingleton<IPageBuilderContext, XperiencePageBuilderContext>()
             .AddSingleton<IContactContext, XperienceContactContext>()
-            .Configure<RazorCacheConfiguration>(c =>
-            {
-                c.CacheAbsoluteExpiration = TimeSpan.FromMinutes(3);
-                c.CacheSlidingExpiration = TimeSpan.FromMinutes(1);
-            })
+            .AddOptions<RazorCacheConfiguration>()
+            .Services
             .AddScoped<RazorCacheService>()
-            .Configure<QueryCacheConfiguration>(config =>
-            {
-                config.CacheItemDuration = TimeSpan.FromMinutes(5);
-                config.IsEnabled = true;
-            })
+            .AddOptions<QueryCacheConfiguration>()
+            .Services
             .Scan(s => s
                 .FromAssemblies(assemblies)
                 .AddClasses(c => c.Where(MatchCQRSTypes), true)

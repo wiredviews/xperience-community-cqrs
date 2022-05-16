@@ -27,7 +27,7 @@ public class HomePageQueryHandler : CacheableQueryHandler<HomePageQuery, HomePag
             .ToResult($"Could not find any [{HomePage.CLASS_NAME}]")
             .Map(p =>
             {
-                var image = GetImage(p, token);
+                var image = GetImage(p);
 
                 var descriptionHTML = string.IsNullOrWhiteSpace(p.Fields.DescriptionHTML)
                     ? Maybe<string>.None
@@ -37,7 +37,7 @@ public class HomePageQueryHandler : CacheableQueryHandler<HomePageQuery, HomePag
             });
 
 
-    private Maybe<HomePageImageData> GetImage(HomePage page, CancellationToken token)
+    private Maybe<HomePageImageData> GetImage(HomePage page)
     {
         var image = page.Fields.HeroImage;
 

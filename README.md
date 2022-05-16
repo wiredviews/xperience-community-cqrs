@@ -7,12 +7,14 @@
 [![NuGet Package](https://img.shields.io/nuget/v/XperienceCommunity.CQRS.Web.svg)](https://www.nuget.org/packages/XperienceCommunity.CQRS.Web)
 
 A CQRS implementation influenced by <https://github.com/jbogard/MediatR/>
-combined with <https://github.com/vkhorikov/CSharpFunctionalExtensions> for Kentico Xperience applications.
+combined with <https://github.com/vkhorikov/CSharpFunctionalExtensions> Maybe and Result monads for Kentico Xperience applications.
 
 ## Dependencies
 
-This package is compatible with ASP.NET Core 6+ and is designed to be used with
-.NET Core / .NET 6 applications integrated with Kentico Xperience 13.0.
+This package is compatible with ASP.NET Core 6+ and is designed to be used with Kentico Xperience 13.0
+
+> Note: This library requires [Kentico Xperience 13: Refresh 1](https://docs.xperience.io/release-notes-xperience-13#ReleasenotesXperience13-Ref1)
+> (Hotfix 13.0.16 and later).
 
 ## How to Use?
 
@@ -46,7 +48,7 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with
 
    ```csharp
    public record HomePageQuery : IQuery<HomePageQueryData>;
-   public record HomePageQueryData(string Title, Maybe<string> BodyHTML);
+   public record HomePageQueryData(int DocumentID, string Title, Maybe<string> BodyHTML);
    ```
 
 1. Create a new implementation of `IQueryHandler<TQuery, TResponse>`
@@ -68,16 +70,19 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with
                        ? Maybe<string>.None
                        : p.Fields.BodyHTML;
 
-                   return new HomePageQueryData(homePage.Fields.Title, bodyHTML);
+                   return new HomePageQueryData(homePage.DocumentID, homePage.Fields.Title, bodyHTML);
                });
 
        protected override ICacheDependencyKeysBuilder AddDependencyKeys(
            HomePageQuery query,
            HomePageQueryData response,
            ICacheDependencyKeysBuilder builder) =>
-           builder.PageType(HomePage.CLASS_NAME);
+           builder.Page(response.DocumentID);
    }
    ```
+
+   > Note: To be identified by the library, all Query and Command handler classes must be named
+   > with the suffix `QueryHandler` or `CommandHandler`.
 
 1. Register the library's dependencies with the service collection
 
@@ -86,10 +91,31 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with
    {
        public void ConfigureServices(IServiceCollection services)
        {
-           services.AddCQRS(typeof(HomePageQueryHandler).Assembly);
+           services.AddXperienceCQRS(typeof(HomePageQueryHandler).Assembly);
 
            // ...
        }
+   }
+   ```
+
+1. (Optional) Configure cache settings through dependency injection:
+
+   ```csharp
+   public class Startup
+   {
+      public void ConfigureServices(IServiceCollection services)
+      {
+          services
+            .AddXperienceCQRS(typeof(HomePageQueryHandler).Assembly)
+            .Configure<RazorCacheConfiguration>(c =>
+            {
+                c.IsEnabled = false;
+            })
+            .Configure<QueryCacheConfiguration>(c =>
+            {
+                c.CacheItemDuration = TimeSpan.FromMinutes(20);
+            });
+      }
    }
    ```
 
@@ -105,7 +131,7 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with
 
        public Task<IViewComponentResult> Invoke() =>
            dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-               .ViewWithFallbackOnFailure(this, "_HomePage", data => new HomePageViewModel(data));
+               .ViewWithFallbackOnFailure(this, "HomePage", data => new HomePageViewModel(data));
    }
    ```
 
@@ -126,7 +152,12 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with
 
 ## How Does It Work?
 
-- TODO
+This library's primary goal is to isolate data access into individual operations, with explicit and type-safe
+cache item names and dependencies. It models both content and operations with `Maybe` and `Result` monads.
+
+Most Kentico Xperience 13.0 sites focus on data retrieval for the ASP.NET Core application and this library focuses on supporting
+robust data access. It also encourages data submission/modification operations
+(ex: commerce, external system integrations, user data management) to be separated from data retrieval.
 
 ## Contributing
 

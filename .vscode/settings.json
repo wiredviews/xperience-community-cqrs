@@ -1,19 +1,25 @@
 {
-    "omnisharp.defaultLaunchSolution": "./XperienceCommunity.CQRS.sln",
-    "omnisharp.organizeImportsOnFormat": true,
-    "omnisharp.useEditorFormattingSettings": true,
-    "omnisharp.enableEditorConfigSupport": true,
-    "omnisharp.enableImportCompletion": true,
-    
-    "csharp.semanticHighlighting.enabled": true,
+  "omnisharp.defaultLaunchSolution": "./XperienceCommunity.CQRS.sln",
+  "omnisharp.organizeImportsOnFormat": true,
+  "omnisharp.useEditorFormattingSettings": true,
+  "omnisharp.enableEditorConfigSupport": true,
+  "omnisharp.enableImportCompletion": true,
+  "omnisharp.useModernNet": true,
 
-    "editor.formatOnSave": true,
-    
-    "[csharp]": {
-        "editor.semanticHighlighting.enabled": true,
-        "editor.codeActionsOnSave": {
-            "source.fixAll": true,
-            "source.organizeImports": true
-        },
+  "csharp.semanticHighlighting.enabled": true,
+
+  "editor.formatOnSave": true,
+
+  "[razor]": {
+    "editor.semanticHighlighting.enabled": true,
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+
+  "[csharp]": {
+    "editor.semanticHighlighting.enabled": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
     }
+  }
 }

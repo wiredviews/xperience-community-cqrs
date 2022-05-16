@@ -5,8 +5,18 @@ namespace XperienceCommunity.CQRS.Data;
 
 public class QueryCacheConfiguration
 {
-    public bool IsEnabled { get; set; }
-    public TimeSpan CacheItemDuration { get; set; }
+    /// <summary>
+    /// Enables or disables query data caching.
+    /// </summary>
+    /// <remarks>Defaults to <see langword="true"/></remarks>
+    public bool IsEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Sets the cache duration for query data caching.
+    /// </summary>
+    /// <remarks>Defaults to 5 minutes</remarks>
+    /// <returns></returns>
+    public TimeSpan CacheItemDuration { get; set; } = TimeSpan.FromMinutes(5);
 }
 
 /// <summary>

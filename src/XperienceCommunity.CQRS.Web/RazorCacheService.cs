@@ -13,15 +13,18 @@ public class RazorCacheConfiguration
     /// <summary>
     /// Sets the sliding cache expiration for view caching.
     /// </summary>
-    public TimeSpan CacheSlidingExpiration { get; set; }
+    /// <remarks>Defaults to 1 minute</remarks>
+    public TimeSpan CacheSlidingExpiration { get; set; } = TimeSpan.FromMinutes(1);
     /// <summary>
     /// Sets the absolute cache expiration for view caching.
     /// </summary>
+    /// <remarks>Defaults to 3 minutes</remarks>
     /// <value></value>
-    public TimeSpan CacheAbsoluteExpiration { get; set; }
+    public TimeSpan CacheAbsoluteExpiration { get; set; } = TimeSpan.FromMinutes(3);
     /// <summary>
-    /// Enables or disables view caching. Defaults to true.
+    /// Enables or disables view caching.
     /// </summary>
+    /// <remarks>Defaults to <see langword="true"/></remarks>
     public bool IsEnabled { get; set; } = true;
 }
 
@@ -103,12 +106,9 @@ public class RazorCacheService
     {
         var principal = accessor.HttpContext?.User;
 
-        if (principal is null || principal.Identity is not ClaimsIdentity identity)
-        {
-            return $"{VaryByPage()}|AuthN:False";
-        }
-
-        return $"{VaryByPage()}|AuthN:{identity.IsAuthenticated}";
+        return principal is null || principal.Identity is not ClaimsIdentity identity
+            ? $"{VaryByPage()}|AuthN:False"
+            : $"{VaryByPage()}|AuthN:{identity.IsAuthenticated}";
     }
 
     /// <summary>

@@ -1,5 +1,3 @@
-using NUnit.Framework;
-
 namespace XperienceCommunity.CQRS.Web.Tests;
 
 public class Tests
@@ -10,8 +8,5 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
-    {
-        Assert.Pass();
-    }
+    public void Test1() => Assert.Pass();
 }
