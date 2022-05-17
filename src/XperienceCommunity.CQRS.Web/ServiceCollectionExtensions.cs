@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services"></param>
     /// <param name="assemblies"></param>
     /// <returns></returns>
-    public static IServiceCollection AddXperienceCQRS(this IServiceCollection services, params Assembly[] assemblies) =>
+    public static IServiceCollection AddXperienceCQRS(this IServiceCollection services, IEnumerable<Assembly> assemblies) =>
         services
             .AddSingleton<IQueryContext, XperienceQueryContext>()
             .AddSingleton<ISiteContext, XperienceSiteContext>()
@@ -20,9 +20,11 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IPageBuilderContext, XperiencePageBuilderContext>()
             .AddSingleton<IContactContext, XperienceContactContext>()
             .AddOptions<RazorCacheConfiguration>()
+            .BindConfiguration("XperienceCommunity:CQRS:Caching:Razor")
             .Services
             .AddScoped<RazorCacheService>()
             .AddOptions<QueryCacheConfiguration>()
+            .BindConfiguration("XperienceCommunity:CQRS:Caching:Query")
             .Services
             .Scan(s => s
                 .FromAssemblies(assemblies)

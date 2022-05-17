@@ -98,6 +98,30 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with 
    }
    ```
 
+1. (Optional) Configure cache settings through `appsettings.json`:
+
+   ```json
+   "XperienceCommunity": {
+       "CQRS": {
+           "Caching": {
+                "Razor": {
+                    "CacheSlidingExpiration": "00:02:00",
+                    "CacheAbsoluteExpiration": "00:06:00",
+                    "IsEnabled": true
+                },
+                "Query": {
+                    "CacheItemDuration": "00:10:00",
+                    "IsEnabled": true
+                }
+           }
+       }
+   }
+   ```
+
+   > Note: If using `dotnet watch` for local development, it's recommended to disable Razor and Query caching because
+   > .NET's hot reloading does not know about the memory caching and changes to code might not be
+   > reflected due to cached information.
+
 1. (Optional) Configure cache settings through dependency injection:
 
    ```csharp

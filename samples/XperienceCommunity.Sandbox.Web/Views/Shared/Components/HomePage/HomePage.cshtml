@@ -1,0 +1,22 @@
+@using Microsoft.AspNetCore.Html
+@using XperienceCommunity.Sandbox.Web.Features.Home.Components
+
+@model HomePageViewModel
+
+<h1>@Model.Title</h1>
+
+@Model.BodyHTML.GetValueOrDefault(HtmlString.Empty)
+
+@if (Model.ImagePath is { HasValue: true, Value: var imagePath })
+{
+    <img src="@imagePath" alt="@Model.Title" />
+}
+
+<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore assumenda quidem laboriosam, necessitatibus tempora,
+    atque vel repudiandae veritatis nostrum alias minima suscipit tenetur sed repellat, ratione porro voluptatum.
+    Soluta, at.
+</p>
+
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium necessitatibus sunt aspernatur consequatur
+    recusandae assumenda inventore numquam atque dolorem voluptatibus quidem error aliquam, voluptates accusamus,
+    repellendus totam velit facere qui?</p>

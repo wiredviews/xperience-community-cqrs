@@ -13,8 +13,8 @@ public class HomePageViewComponent : ViewComponent
     public HomePageViewComponent(IQueryDispatcher dispatcher) => this.dispatcher = dispatcher;
 
     public Task<IViewComponentResult> InvokeAsync(HomePage page) =>
-        dispatcher.Dispatch(new HomePageQuery(), HttpContext.RequestAborted)
-            .ViewWithFallbackOnFailure(this, "_HomePage", r => new HomePageViewModel(r));
+        dispatcher.Dispatch(new HomePageQuery(page.DocumentID), HttpContext.RequestAborted)
+            .ViewWithFallbackOnFailure(this, "HomePage", r => new HomePageViewModel(r));
 }
 
 public class HomePageViewModel
