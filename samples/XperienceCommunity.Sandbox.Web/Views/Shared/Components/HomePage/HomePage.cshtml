@@ -7,9 +7,9 @@
 
 @Model.BodyHTML.GetValueOrDefault(HtmlString.Empty)
 
-@if (Model.ImagePath is { HasValue: true, Value: var imagePath })
+@if (Model.ImagePath.TryGetValue(out string path))
 {
-    <img src="@imagePath" alt="@Model.Title" />
+    <img src="@path" alt="@Model.Title" />
 }
 
 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore assumenda quidem laboriosam, necessitatibus tempora,

@@ -111,7 +111,8 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with 
                 },
                 "Query": {
                     "CacheItemDuration": "00:10:00",
-                    "IsEnabled": true
+                    "IsEnabled": true,
+                    "IsSlidingExpiration": true
                 }
            }
        }
@@ -168,9 +169,9 @@ This package is compatible with ASP.NET Core 6+ and is designed to be used with 
 
    @Model.BodyHTML.GetValueOrDefault(HtmlString.Empty)
 
-   @if (Model.ImagePath.HasValue)
+   @if (Model.ImagePath.TryGetValue(out string path))
    {
-       <img src="@Model.ImagePath.GetValueOrThrow()" alt="@Model.Title" />
+       <img src="@path" alt="@Model.Title" />
    }
    ```
 
