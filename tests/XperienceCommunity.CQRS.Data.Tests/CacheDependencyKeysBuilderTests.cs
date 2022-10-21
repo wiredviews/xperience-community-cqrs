@@ -1,24 +1,26 @@
+using CMS.Base;
+
 namespace XperienceCommunity.CQRS.Data.Tests;
 
 public class CacheDependencyKeysBuilderTests
 {
     [Test, AutoDomainData]
-    public void CustomKey_Will_Add_A_Key_If_Its_Is_Valid(ISiteContext context)
+    public void CustomKeyWillAddAKeyIfItsIsValid(ISiteService siteService)
     {
-        var sut = new CacheDependencyKeysBuilder(context);
+        var sut = new CacheDependencyKeysBuilder(siteService);
 
-        sut.CustomKey("key");
+        _ = sut.CustomKey("key");
 
         var keys = sut.GetKeys();
 
-        keys.Should().BeEquivalentTo(new[] { "key" });
+        _ = keys.Should().BeEquivalentTo(new[] { "key" });
 
         keys.Clear();
 
-        sut.CustomKey("  ");
+        _ = sut.CustomKey("  ");
 
         keys = sut.GetKeys();
 
-        keys.Should().BeEquivalentTo(new string[] { });
+        _ = keys.Should().BeEquivalentTo(Array.Empty<string>());
     }
 }

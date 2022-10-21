@@ -1,3 +1,4 @@
+using CMS.Base;
 using CMS.Core;
 
 namespace XperienceCommunity.CQRS.Data;
@@ -14,18 +15,18 @@ public class QueryHandlerErrorDecorator<TQuery, TResponse> : IQueryHandler<TQuer
 {
     private readonly IQueryHandler<TQuery, TResponse> handler;
     private readonly IEventLogService log;
-    private readonly ISiteContext context;
+    private readonly ISiteService siteService;
     private readonly ISettingsService settings;
 
     public QueryHandlerErrorDecorator(
         IQueryHandler<TQuery, TResponse> handler,
         IEventLogService log,
-        ISiteContext context,
+        ISiteService siteService,
         ISettingsService settings)
     {
         this.handler = handler;
         this.log = log;
-        this.context = context;
+        this.siteService = siteService;
         this.settings = settings;
     }
 
@@ -41,7 +42,7 @@ public class QueryHandlerErrorDecorator<TQuery, TResponse> : IQueryHandler<TQuer
                     handler.GetType().Name,
                     "QUERY_FAILURE",
                     result.Error,
-                    context.SiteID);
+                    siteService.CurrentSite.SiteID);
             }
 
             return result;
@@ -61,7 +62,7 @@ public class QueryHandlerErrorDecorator<TQuery, TResponse> : IQueryHandler<TQuer
                     handler.GetType().Name,
                     "QUERY_FAILURE",
                     ex,
-                    context.SiteID,
+                    siteService.CurrentSite.SiteID,
                     ex.Message);
             }
 

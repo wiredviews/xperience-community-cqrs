@@ -1,3 +1,4 @@
+using CMS.Base;
 using CMS.ContactManagement;
 using CMS.SiteProvider;
 using XperienceCommunity.PageBuilderUtilities;
@@ -7,30 +8,9 @@ namespace XperienceCommunity.CQRS.Data;
 public interface IQueryContext
 {
     IPageBuilderContext PageBuilderContext { get; }
-    ISiteContext SiteContext { get; }
+    ISiteService SiteService { get; }
     ICultureContext CultureContext { get; }
     IContactContext ContactContext { get; }
-}
-
-/// <summary>
-/// Abstraction for the current request's site
-/// </summary>
-public interface ISiteContext
-{
-    /// <summary>
-    /// The site's name (code name)
-    /// </summary>
-    string SiteName { get; }
-
-    /// <summary>
-    /// The site's visual name (display name)
-    /// </summary>
-    string SiteDisplayName { get; }
-
-    /// <summary>
-    /// The site's id
-    /// </summary>
-    int SiteID { get; }
 }
 
 /// <summary>
@@ -65,30 +45,34 @@ public interface IContactContext
 public class XperienceQueryContext : IQueryContext
 {
     public XperienceQueryContext(
-        ISiteContext siteContext,
+        ISiteService siteService,
         ICultureContext cultureContext,
         IPageBuilderContext pageBuilderContext,
         IContactContext contactContext)
     {
-        SiteContext = siteContext;
+        SiteService = siteService;
         CultureContext = cultureContext;
         PageBuilderContext = pageBuilderContext;
         ContactContext = contactContext;
     }
 
-    public ISiteContext SiteContext { get; }
+    public ISiteService SiteService { get; }
     public ICultureContext CultureContext { get; }
     public IPageBuilderContext PageBuilderContext { get; }
     public IContactContext ContactContext { get; }
 }
 
-public class XperienceSiteContext : ISiteContext
+public class XperienceSiteContext : ISiteService
 {
-    public string SiteName => SiteContext.CurrentSiteName ?? "";
+    public static string SiteName => SiteContext.CurrentSiteName ?? "";
 
-    public string SiteDisplayName => SiteContext.CurrentSite?.DisplayName ?? "";
+    public static string SiteDisplayName => SiteContext.CurrentSite?.DisplayName ?? "";
 
-    public int SiteID => SiteContext.CurrentSiteID;
+    public static int SiteID => SiteContext.CurrentSiteID;
+
+    public ISiteInfo CurrentSite => throw new NotImplementedException();
+
+    public bool IsLiveSite => throw new NotImplementedException();
 }
 
 public class XperienceCultureContext : ICultureContext

@@ -3,22 +3,6 @@ using Microsoft.Extensions.Options;
 
 namespace XperienceCommunity.CQRS.Data;
 
-public class QueryCacheConfiguration
-{
-    /// <summary>
-    /// Enables or disables query data caching.
-    /// </summary>
-    /// <remarks>Defaults to <see langword="true"/></remarks>
-    public bool IsEnabled { get; set; } = true;
-
-    /// <summary>
-    /// Sets the cache duration for query data caching.
-    /// </summary>
-    /// <remarks>Defaults to 5 minutes</remarks>
-    /// <returns></returns>
-    public TimeSpan CacheItemDuration { get; set; } = TimeSpan.FromMinutes(5);
-}
-
 /// <summary>
 /// Integrates a caching layer into all <see cref="IQueryHandler{TQuery, TResponse}"/>,
 /// returning successful results from the cache and populating the <see cref="ICacheDependenciesStore"/>
@@ -36,6 +20,10 @@ public class QueryHandlerCacheDecorator<TQuery, TResponse> : IQueryHandler<TQuer
     /// Could be 0 or 1 items in this collection
     /// </summary>
     private readonly IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators;
+    /// <summary>
+    /// Could be 0 or 1 items in this collection
+    /// </summary>
+    private readonly IEnumerable<IQueryHandlerCacheSettingsCustomizer<TQuery, TResponse>> cacheCustomizers;
     private readonly ICacheDependenciesStore store;
     private readonly QueryCacheConfiguration config;
 
@@ -43,12 +31,14 @@ public class QueryHandlerCacheDecorator<TQuery, TResponse> : IQueryHandler<TQuer
         IQueryHandler<TQuery, TResponse> handler,
         IProgressiveCache cache,
         IEnumerable<IQueryHandlerCacheKeysCreator<TQuery, TResponse>> creators,
+        IEnumerable<IQueryHandlerCacheSettingsCustomizer<TQuery, TResponse>> cacheCustomizers,
         ICacheDependenciesStore store,
         IOptions<QueryCacheConfiguration> config)
     {
         this.handler = handler;
         this.cache = cache;
         this.creators = creators;
+        this.cacheCustomizers = cacheCustomizers;
         this.store = store;
         this.config = config.Value;
     }
@@ -62,7 +52,9 @@ public class QueryHandlerCacheDecorator<TQuery, TResponse> : IQueryHandler<TQuer
             return await handler.Execute(query, token);
         }
 
-        var settings = new CacheSettings(
+        var customizer = cacheCustomizers.FirstOrDefault();
+
+        var settings = customizer?.CustomizeCacheSettings(config, creator, query) ?? new CacheSettings(
             cacheMinutes: config.CacheItemDuration.Minutes,
             useSlidingExpiration: true,
             cacheItemNameParts: creator.ItemNameParts(query));

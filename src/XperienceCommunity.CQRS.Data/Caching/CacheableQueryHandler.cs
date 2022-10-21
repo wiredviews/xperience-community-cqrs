@@ -1,3 +1,5 @@
+using CMS.Base;
+using CMS.Helpers;
 using XperienceCommunity.PageBuilderUtilities;
 
 namespace XperienceCommunity.CQRS.Data;
@@ -9,6 +11,7 @@ namespace XperienceCommunity.CQRS.Data;
 /// <typeparam name="TResponse"></typeparam>
 public abstract class CacheableQueryHandler<TQuery, TResponse> :
     IQueryHandlerCacheKeysCreator<TQuery, TResponse>,
+    IQueryHandlerCacheSettingsCustomizer<TQuery, TResponse>,
     IQueryHandler<TQuery, TResponse>
 
     where TQuery : IQuery<TResponse>
@@ -19,7 +22,7 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
 
     protected IQueryContext Context { get; }
     protected IPageBuilderContext PageBuilderContext => Context.PageBuilderContext;
-    protected ISiteContext SiteContext => Context.SiteContext;
+    protected ISiteService SiteService => Context.SiteService;
     protected ICultureContext CultureContext => Context.CultureContext;
 
     /// <inheritdoc/>
@@ -28,7 +31,7 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
     /// <inheritdoc/>
     public string[] DependencyKeys(TQuery query, TResponse response)
     {
-        var builder = new CacheDependencyKeysBuilder(SiteContext);
+        var builder = new CacheDependencyKeysBuilder(SiteService);
         _ = builder.CustomKeys(customKeys);
         _ = AddDependencyKeys(query, response, builder);
 
@@ -41,7 +44,7 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
     /// <param name="setCustomKeys"></param>
     protected void SetCustomKeys(Action<ICacheDependencyKeysBuilder> setCustomKeys)
     {
-        var builder = new CacheDependencyKeysBuilder(SiteContext);
+        var builder = new CacheDependencyKeysBuilder(SiteService);
 
         setCustomKeys(builder);
 
@@ -63,7 +66,7 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
             ? new object[]
                 {
                         query.GetType().Name,
-                        SiteContext.SiteName,
+                        SiteService.CurrentSite.SiteName,
                         CultureContext.CultureCode,
                         $"is-live:{PageBuilderContext.IsLiveMode}",
                         cacheByValueQuery.CacheValueKey
@@ -71,8 +74,19 @@ public abstract class CacheableQueryHandler<TQuery, TResponse> :
             : new object[]
                 {
                         query.GetType().Name,
-                        SiteContext.SiteName,
+                        SiteService.CurrentSite.SiteName,
                         CultureContext.CultureCode,
                         $"is-live:{PageBuilderContext.IsLiveMode}"
                 };
+
+    /// <inheritdoc />
+    public virtual CacheSettings CustomizeCacheSettings(QueryCacheConfiguration config, IQueryHandlerCacheKeysCreator<TQuery, TResponse> creator, TQuery query)
+    {
+        var cs = new CacheSettings(
+            cacheMinutes: config.CacheItemDuration.Minutes,
+            useSlidingExpiration: config.IsSlidingExpiration,
+            cacheItemNameParts: creator.ItemNameParts(query));
+
+        return cs;
+    }
 }

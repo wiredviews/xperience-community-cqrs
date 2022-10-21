@@ -15,7 +15,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddXperienceCQRS(this IServiceCollection services, IEnumerable<Assembly> assemblies) =>
         services
             .AddSingleton<IQueryContext, XperienceQueryContext>()
-            .AddSingleton<ISiteContext, XperienceSiteContext>()
             .AddSingleton<ICultureContext, XperienceCultureContext>()
             .AddSingleton<IPageBuilderContext, XperiencePageBuilderContext>()
             .AddSingleton<IContactContext, XperienceContactContext>()

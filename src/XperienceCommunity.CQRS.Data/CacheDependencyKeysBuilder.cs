@@ -1,3 +1,4 @@
+using CMS.Base;
 using CMS.DataEngine;
 
 namespace XperienceCommunity.CQRS.Data;
@@ -286,9 +287,10 @@ public interface ICacheDependencyKeysBuilder
 public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
 {
     private readonly HashSet<string> cacheKeys = new(StringComparer.InvariantCultureIgnoreCase);
-    private readonly ISiteContext context;
+    private readonly ISiteService siteService;
 
-    public CacheDependencyKeysBuilder(ISiteContext context) => this.context = context;
+    public CacheDependencyKeysBuilder(ISiteService siteService) =>
+        this.siteService = siteService;
 
     public ISet<string> GetKeys() => cacheKeys;
     public void ClearKeys() => cacheKeys.Clear();
@@ -342,7 +344,7 @@ public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
             return this;
         }
 
-        _ = cacheKeys.Add($"cms.settingskey|{context.SiteID}|{keyName}");
+        _ = cacheKeys.Add($"cms.settingskey|{siteService.CurrentSite.SiteID}|{keyName}");
 
         return this;
     }
@@ -373,7 +375,7 @@ public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
             return this;
         }
 
-        _ = cacheKeys.Add($"nodes|{context.SiteName}|{className}|all");
+        _ = cacheKeys.Add($"nodes|{siteService.CurrentSite.SiteName}|{className}|all");
 
         return this;
     }
@@ -432,20 +434,20 @@ public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
         switch (type)
         {
             case PathTypeEnum.Single:
-                _ = cacheKeys.Add($"node|{context.SiteName}|{path}");
+                _ = cacheKeys.Add($"node|{siteService.CurrentSite.SiteName}|{path}");
                 break;
             case PathTypeEnum.Children:
-                _ = cacheKeys.Add($"node|{context.SiteName}|{path}|childnodes");
+                _ = cacheKeys.Add($"node|{siteService.CurrentSite.SiteName}|{path}|childnodes");
                 break;
             case PathTypeEnum.Section:
-                _ = cacheKeys.Add($"node|{context.SiteName}|{path}");
-                _ = cacheKeys.Add($"node|{context.SiteName}|{path}|childnodes");
+                _ = cacheKeys.Add($"node|{siteService.CurrentSite.SiteName}|{path}");
+                _ = cacheKeys.Add($"node|{siteService.CurrentSite.SiteName}|{path}|childnodes");
                 break;
             case PathTypeEnum.Explicit:
             default:
                 _ = path.EndsWith("/%")
-                    ? cacheKeys.Add($"node|{context.SiteName}|{path}|childnodes")
-                    : cacheKeys.Add($"node|{context.SiteName}|{path}");
+                    ? cacheKeys.Add($"node|{siteService.CurrentSite.SiteName}|{path}|childnodes")
+                    : cacheKeys.Add($"node|{siteService.CurrentSite.SiteName}|{path}");
                 break;
         }
 
@@ -498,7 +500,7 @@ public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
             return this;
         }
 
-        _ = cacheKeys.Add($"nodeguid|{context.SiteName}|{nodeGUID}");
+        _ = cacheKeys.Add($"nodeguid|{siteService.CurrentSite.SiteName}|{nodeGUID}");
 
         return this;
     }
@@ -526,7 +528,7 @@ public class CacheDependencyKeysBuilder : ICacheDependencyKeysBuilder
             return this;
         }
 
-        _ = cacheKeys.Add($"documentguid|{context.SiteName}|{documentGUID}");
+        _ = cacheKeys.Add($"documentguid|{siteService.CurrentSite.SiteName}|{documentGUID}");
 
         return this;
     }
