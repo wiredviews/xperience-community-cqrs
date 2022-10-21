@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net6.0": {
+      "xperiencecommunity.cqrs.core": {
+        "type": "Project",
+        "dependencies": {
+          "CSharpFunctionalExtensions": "[2.35.0, )"
+        }
+      },
+      "CSharpFunctionalExtensions": {
+        "type": "CentralTransitive",
+        "requested": "[2.35.0, )",
+        "resolved": "2.35.0",
+        "contentHash": "UAcu1xWx45mCFaXm3yXt8jOoHs5U2cP/QVhH72/rq//nuNC+BY1WnipKinrf6LVh41KdQ9dokmCgxvR285an2g=="
+      }
+    }
+  }
+}

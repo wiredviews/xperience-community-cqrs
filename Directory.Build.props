@@ -12,15 +12,15 @@
     <Title>$(Product)</Title>
     <PackageProjectUrl>https://github.com/wiredviews/xperience-cqrs</PackageProjectUrl>
     <PackageIcon>wv-logo.png</PackageIcon>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>xperience;kentico;mvc;aspnetcore</PackageTags>
     <PackageReleaseNotes>https://github.com/wiredviews/xperience-cqrs/releases</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-		<None Include="$(MSBuildThisFileDirectory)\images\wv-logo.png" Pack="true" Visible="false" PackagePath="" />
-		<None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath=""/>
-	</ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)\images\wv-logo.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="$(MSBuildThisFileDirectory)\README.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -30,18 +30,20 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
 
   <ItemGroup>
-		<Using Include="CSharpFunctionalExtensions" />
-	</ItemGroup>
+    <Using Include="CSharpFunctionalExtensions" />
+  </ItemGroup>
 
-	<PropertyGroup Condition=" $(Configuration) == 'Release' ">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	</PropertyGroup>
+  <PropertyGroup Condition=" $(Configuration) == 'Release' ">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 
 </Project>
