@@ -92,16 +92,25 @@ public class ScopedCacheTagHelper : CacheTagHelperBase
         }
 
         IHtmlContent content;
+
         if (UseDefaults)
         {
             Enabled = cacheService.IsEnabled;
-            ExpiresSliding = cacheService.SlidingExpiration;
-            ExpiresAfter = cacheService.AbsoluteExpiration;
+
+            if (!ExpiresSliding.HasValue)
+            {
+                ExpiresSliding = cacheService.SlidingExpiration;
+            }
+
+            if (!ExpiresAfter.HasValue)
+            {
+                ExpiresAfter = cacheService.AbsoluteExpiration;
+            }
         }
 
         if (Enabled)
         {
-            if (UseDefaults)
+            if (UseDefaults && string.IsNullOrWhiteSpace(VaryBy))
             {
                 VaryBy = cacheService.VaryByPage();
             }
@@ -110,7 +119,17 @@ public class ScopedCacheTagHelper : CacheTagHelperBase
             if (MemoryCache.TryGetValue(cacheKey, out Task<IHtmlContent> cachedResult))
             {
                 // There is either some value already cached (as a Task) or a worker processing the output.
-                content = await cachedResult;
+                try
+                {
+                    content = await cachedResult;
+                }
+                /* Cancelations discard the result, so returning an empty value is fine here and prevents
+                 * the exception from bubbling up and spamming the error log
+                 */
+                catch (TaskCanceledException)
+                {
+                    content = HtmlString.Empty;
+                }
             }
             else
             {
@@ -124,7 +143,7 @@ public class ScopedCacheTagHelper : CacheTagHelperBase
 
         // Clear the contents of the "cache" element since we don't want to render it.
         output.SuppressOutput();
-        output.Content.SetHtmlContent(content);
+        _ = output.Content.SetHtmlContent(content);
     }
 
     private async Task<IHtmlContent> CreateCacheEntry(ScopedCacheTagKey cacheKey, TagHelperOutput output)
@@ -246,29 +265,29 @@ public class ScopedCacheTagHelper : CacheTagHelperBase
         if (ExpiresOn != null)
         {
             hasEvictionCriteria = true;
-            options.SetAbsoluteExpiration(ExpiresOn.Value);
+            _ = options.SetAbsoluteExpiration(ExpiresOn.Value);
         }
 
         if (ExpiresAfter != null)
         {
             hasEvictionCriteria = true;
-            options.SetAbsoluteExpiration(ExpiresAfter.Value);
+            _ = options.SetAbsoluteExpiration(ExpiresAfter.Value);
         }
 
         if (ExpiresSliding != null)
         {
             hasEvictionCriteria = true;
-            options.SetSlidingExpiration(ExpiresSliding.Value);
+            _ = options.SetSlidingExpiration(ExpiresSliding.Value);
         }
 
         if (Priority != null)
         {
-            options.SetPriority(Priority.Value);
+            _ = options.SetPriority(Priority.Value);
         }
 
         if (!hasEvictionCriteria)
         {
-            options.SetSlidingExpiration(DefaultExpiration);
+            _ = options.SetSlidingExpiration(DefaultExpiration);
         }
 
         return options;
@@ -609,13 +628,13 @@ public class ScopedCacheTagKey : IEquatable<ScopedCacheTagKey>
         }
 
         var builder = new StringBuilder(prefix);
-        builder
+        _ = builder
             .Append(CacheKeyTokenSeparator)
             .Append(Key);
 
         if (!string.IsNullOrEmpty(varyBy))
         {
-            builder
+            _ = builder
                 .Append(CacheKeyTokenSeparator)
                 .Append(VaryByName)
                 .Append(CacheKeyTokenSeparator)
@@ -629,7 +648,7 @@ public class ScopedCacheTagKey : IEquatable<ScopedCacheTagKey>
 
         if (varyByUser)
         {
-            builder
+            _ = builder
                 .Append(CacheKeyTokenSeparator)
                 .Append(VaryByUserName)
                 .Append(CacheKeyTokenSeparator)
@@ -638,7 +657,7 @@ public class ScopedCacheTagKey : IEquatable<ScopedCacheTagKey>
 
         if (varyByCulture)
         {
-            builder
+            _ = builder
                 .Append(CacheKeyTokenSeparator)
                 .Append(VaryByCulture)
                 .Append(CacheKeyTokenSeparator)
@@ -669,15 +688,7 @@ public class ScopedCacheTagKey : IEquatable<ScopedCacheTagKey>
     }
 
     /// <inheritdoc />
-    public override bool Equals(object? obj)
-    {
-        if (obj is ScopedCacheTagKey other)
-        {
-            return Equals(other);
-        }
-
-        return false;
-    }
+    public override bool Equals(object? obj) => obj is ScopedCacheTagKey other && Equals(other);
 
     /// <inheritdoc />
     public bool Equals(ScopedCacheTagKey? other)
@@ -787,7 +798,7 @@ public class ScopedCacheTagKey : IEquatable<ScopedCacheTagKey>
         }
 
         // keyName(param1=value1|param2=value2)
-        builder
+        _ = builder
             .Append(CacheKeyTokenSeparator)
             .Append(collectionName)
             .Append('(');
@@ -798,16 +809,16 @@ public class ScopedCacheTagKey : IEquatable<ScopedCacheTagKey>
 
             if (i > 0)
             {
-                builder.Append(CacheKeyTokenSeparator);
+                _ = builder.Append(CacheKeyTokenSeparator);
             }
 
-            builder
+            _ = builder
                 .Append(item.Key)
                 .Append(CacheKeyTokenSeparator)
                 .Append(item.Value);
         }
 
-        builder.Append(')');
+        _ = builder.Append(')');
     }
 
     private static void CombineCollectionHashCode(
